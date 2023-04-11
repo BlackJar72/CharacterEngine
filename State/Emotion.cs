@@ -8,7 +8,7 @@ namespace CharacterModel {
     /// <summary>
     /// Based loosely on Plutnicks color wheel of emotions, but with some liberties to have
     /// it work better and make more sense ase a game.  Notably, fear and surprize are swaped
-    /// and the positive axis goes through "love"
+    /// and the positive axis goes through "love."
     /// </summary>
     public struct Emotion {
         // Some directional units
@@ -38,6 +38,10 @@ namespace CharacterModel {
         public float Strength   => Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
 
 
+        // Emotional Axes
+        static readonly Emotion UPOSITIVE   = new Emotion( 1, 0);
+        static readonly Emotion UAVOIDANCE  = new Emotion( 0, 1);
+
         // Unit feeling vectors -- primary
         static readonly Emotion UHAPPY  = new Emotion( COS225, -SIN225);
         static readonly Emotion UTRUST  = new Emotion( COS225,  SIN225);
@@ -62,6 +66,27 @@ namespace CharacterModel {
         public Emotion(float positivity, float avoidance) {
             this.positivity = positivity;
             this.avoidance = avoidance;
+        }
+
+
+        public float GetEmotionAngle() {
+            float dpos = Positivity - 1;
+            return Mathf.Acos(positivity / Mathf.Sqrt((dpos * dpos) + (avoidance * avoidance)));
+        }
+
+
+        public float MagnitudeSq() {
+            return (positivity * positivity) + (avoidance * avoidance);
+        }
+
+
+        public float Magnitude() {
+            return Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
+        }
+
+
+        public float Dot(Emotion a, Emotion b) {
+            return ((a.positivity * b.positivity) + (a.avoidance * b.avoidance));
         }
 
     }
