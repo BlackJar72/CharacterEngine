@@ -6,12 +6,16 @@ using UnityEngine;
 namespace CharacterModel {
 
     public class EmotionType {
+        public const float RAD2EMO = 1.0f / 0.785398163398f;
         public static readonly EEmotionType[] emotions = new EEmotionType[] {
-            EEmotionType.CONNECTED, EEmotionType.SURPRISED, EEmotionType.FEAR, EEmotionType.SADNESS,
-            EEmotionType.DISGUST, EEmotionType.ANGER, EEmotionType.INTERESTED, EEmotionType.HAPPY };
+            EEmotionType.FEAR,       EEmotionType.SADNESS, EEmotionType.DISGUST,   EEmotionType.ANGER,
+            EEmotionType.INTERESTED, EEmotionType.HAPPY,   EEmotionType.CONNECTED, EEmotionType.SURPRISED };
+
 
         public static EEmotionType GetTypeOfEmotion(Emotion emotion) {
-            return emotions[(int)emotion.GetEmotionAngle() / 45];
+            if(!((emotion.Positivity == 0) && (emotion.Avoidance == 0)))
+                return emotions[(int)(emotion.GetEmotionAngle() * RAD2EMO)];
+            else return EEmotionType.HAPPY;
         }
 
 
@@ -19,14 +23,14 @@ namespace CharacterModel {
 
 
     public enum EEmotionType {
-        CONNECTED,
-        SURPRISED,
         FEAR,
         SADNESS,
         DISGUST,
         ANGER,
         INTERESTED,
-        HAPPY
+        HAPPY,
+        CONNECTED,
+        SURPRISED
     }
 
 }
