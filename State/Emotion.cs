@@ -70,7 +70,6 @@ namespace CharacterModel {
 
 
         public float GetEmotionAngle() {
-            // FIXME? This is probably right, but if emotions are wrong this is a good place to start looking
             return  Mathf.Atan2(avoidance, positivity);
         }
 

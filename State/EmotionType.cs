@@ -8,8 +8,8 @@ namespace CharacterModel {
     public class EmotionType {
         public const float RAD2EMO = 1.0f / 0.785398163398f;
         public static readonly EEmotionType[] emotions = new EEmotionType[] {
-            EEmotionType.FEAR,       EEmotionType.SADNESS, EEmotionType.DISGUST,   EEmotionType.ANGER,
-            EEmotionType.INTERESTED, EEmotionType.HAPPY,   EEmotionType.CONNECTED, EEmotionType.SURPRISED };
+            EEmotionType.SURPRISED, EEmotionType.CONNECTED, EEmotionType.HAPPY,   EEmotionType.INTERESTED,
+            EEmotionType.ANGER,     EEmotionType.DISGUST,   EEmotionType.SADNESS, EEmotionType.FEAR };
 
 
         public static EEmotionType GetTypeOfEmotion(Emotion emotion) {
@@ -23,14 +23,14 @@ namespace CharacterModel {
 
 
     public enum EEmotionType {
-        FEAR,
-        SADNESS,
-        DISGUST,
-        ANGER,
-        INTERESTED,
-        HAPPY,
+        SURPRISED,
         CONNECTED,
-        SURPRISED
+        HAPPY,
+        INTERESTED,
+        ANGER,
+        DISGUST,
+        SADNESS,
+        FEAR
     }
 
 }
