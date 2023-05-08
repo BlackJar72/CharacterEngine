@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using CharacterModel;
 
 
 namespace CharacterModel {
@@ -8,6 +8,7 @@ namespace CharacterModel {
     public class ConcreteAction : MonoBehaviour {
         private ActionPrototype currentAction;
         private IInteractiveObject target;
+
     }
 
 }
