@@ -26,7 +26,7 @@ namespace CharacterModel {
         public void ResetUtility() {Utility = 1.0f;}
 
 
-        public bool ApplyModifier(UtilityModifier modifier) {
+        public void ApplyModifier(UtilityModifier modifier) {
             utility = (utility * modifier.multiplier) + modifier.additive;
         }
 
