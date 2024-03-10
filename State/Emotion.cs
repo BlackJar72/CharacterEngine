@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using kfutils.UI;
+using CharacterModel;
+using System;
 
 
 namespace CharacterModel {
@@ -10,11 +13,13 @@ namespace CharacterModel {
     /// it work better and make more sense ase a game.  Notably, fear and surprize are swaped
     /// and the positive axis goes through "love."
     /// </summary>
-    public struct Emotion {
+    public struct Emotion : IUIDataProvider<(Color color, EEmotionType type)> {
+
         // Some directional units
         const float SQRT2  = 0.707106781187f;
         const float COS225 = 0.923879532511f;
         const float SIN225 = 0.382683432365f;
+        const float TWOPI  = 3.14159265359f * 2.0f;
 
         public static Emotion operator+(Emotion a, Emotion b)
                 => new Emotion(a.positivity + b.positivity, a.avoidance + b.avoidance);
@@ -36,6 +41,20 @@ namespace CharacterModel {
         public float Positivity => positivity;
         public float Avoidance  => avoidance;
         public float Strength   => Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
+
+
+        public Color GetColor() {
+            float hue = GetEmotionColorAngle();
+            float strength = Magnitude();
+            float saturation = Mathf.Clamp(Strength, 0.0f, 1.0f);
+            float value = Mathf.Clamp(((Strength * 0.25f) + 0.5f), 0.5f, 1.0f);
+            return Color.HSVToRGB(hue, saturation, value);
+        }
+
+
+        public ValueTuple<Color, EEmotionType> RetrieveData() {
+            return (color: GetColor(), type: EmotionType.GetTypeOfEmotion(this));
+        }
 
 
         // Emotional Axes
@@ -71,6 +90,14 @@ namespace CharacterModel {
 
         public float GetEmotionAngle() {
             return  Mathf.Atan2(avoidance, positivity);
+        }
+
+
+        public float GetEmotionColorAngle() {
+            float angle = Mathf.Atan2(avoidance, positivity)  / TWOPI;
+            angle += 0.5f;
+            if(angle > 1.0f) angle -= 1.0f;
+            return 1.0f - angle;
         }
 
 

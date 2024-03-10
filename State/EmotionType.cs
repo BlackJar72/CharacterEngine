@@ -33,4 +33,21 @@ namespace CharacterModel {
         FEAR
     }
 
+
+    public static class EmotionNames {
+        private static readonly string[] names = new string[]{
+            "Surprised",
+            "Connected",
+            "Happy",
+            "Interested",
+            "Angry",
+            "Disgusted",
+            "Sad",
+            "Frightened"
+        };
+
+        public static string GetName(EEmotionType emotion) => names[(int)emotion];
+    }
+
+
 }
