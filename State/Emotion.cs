@@ -20,6 +20,7 @@ namespace CharacterModel {
         const float COS225 = 0.923879532511f;
         const float SIN225 = 0.382683432365f;
         const float TWOPI  = 3.14159265359f * 2.0f;
+        const float BOUND  = 3.0f;
 
         public static Emotion operator+(Emotion a, Emotion b)
                 => new Emotion(a.positivity + b.positivity, a.avoidance + b.avoidance);
@@ -41,6 +42,7 @@ namespace CharacterModel {
         public float Positivity => positivity;
         public float Avoidance  => avoidance;
         public float Strength   => Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
+        public float Joy        => positivity / BOUND;
 
 
         public Color GetColor() {
@@ -113,6 +115,23 @@ namespace CharacterModel {
 
         public float Dot(Emotion a, Emotion b) {
             return ((a.positivity * b.positivity) + (a.avoidance * b.avoidance));
+        }
+
+
+        // TODO: Profile to see if this is to see if it is too computationally expensive to be practical if called frequently at scale
+        // Prefered way to do it
+        public void BoundCircular() {
+            float size = Magnitude();
+            float factor = Mathf.Min(size, BOUND) / size;
+            positivity *= factor;
+            avoidance *= factor;
+        }
+
+
+        // TODO: Profile to see if this is to see if it is significantly more efficient than BoundCircular()
+        public void BoundSimple() {
+            positivity = Mathf.Clamp(positivity, -BOUND, BOUND);
+            avoidance  = Mathf.Clamp(avoidance, -BOUND, BOUND);
         }
 
     }

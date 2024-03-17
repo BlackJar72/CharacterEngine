@@ -1,0 +1,121 @@
+using System.Runtime.CompilerServices;
+using UnityEngine;
+
+
+namespace CharacterModel {
+
+
+/*****************************************************************************************************
+//•   Energy: (Physical) Decreases somewhat slowly, and is restored by rest (sleep); exertion may
+//    drain it faster. Running out causes passing out.
+//
+//•   Hunger: (Physical) Decreases at a moderate pace and is restored by eating. Running out causes
+//    death.
+//
+//•   Bowels: (Physical) Decreases at a moderate speed, decreased some by eating, restored by
+//    bathrooms – because bladder has already been used, but its basically the same need with a
+//    different name. Running out causes an embarrassing loose of bowel control.
+//
+//•   Health: (Physical) Based on several thing; slowly decreased when other physical needs are low,
+//    when diet is not balanced, or when sick or injured. Improved slowly by keeping other physical
+//    needs high and when recovering from illness. Running out causes death.
+//
+//•   Social: (Psychological) Decreases over time at moderate speed, increased be socialization; rates
+//    in each direction are effected by Extroversion and by some extroverted Minor Traits. When low
+//    an emotion in the pure negative direction is produced (thus it can effect the next need, they are
+//    not completely orthogonal.)
+//
+//•   Emotional: (Psychological) Based on positivity component of the current emotional state vector.
+//    When very low it become hard to continue or focus on tasks, so they may be abandoned
+//    prematurely.
+//
+//•   Situational: (Psychological) A mixture of current environment and comfort; these are added to
+//    create a target that the need itself tracks (but does not jump to equaling).
+//
+//•   Aspirational: (Psychological) Decrease very slowly over time, and is increased by doing thing
+//    that the character would enjoy doing or find meaningful based on Minor Traits, Dreams, and
+//    Interests.
+********************************************************************************************************/
+
+
+    public class CoreNeeds {
+        // Physical Needs
+        [SerializeField] Need energy = new Need(0.03f, 2.0f);
+        [SerializeField] Need nourishment = new Need(0.015f, 5.0f);
+        [SerializeField] Need excretion = new Need(0.125f, 2.5f);
+        [SerializeField] Need health = new Need(0.0f, 0.75f);
+        // Psychological Needs
+        [SerializeField] Need social = new Need(0.027f, 1.0f);
+        [SerializeField] Need emotional = new Need(0.0f, 1.0f);
+        [SerializeField] Need situational = new Need(0.0f, 1.0f);
+        [SerializeField] Need aspirational = new Need(0.0030154821598f, 0.5f);
+
+        [SerializeField] float physicalWellbeing = 1.0f;
+        [SerializeField] float mentalWellbeing = 1.0f;
+        [SerializeField] float totalWellbeing = 1.0f;
+
+
+        [SerializeField] float situation = 0.0f; // the current target for the situational need to track
+
+
+        public void UpdateNeeds(Emotion emotionalState) {
+            energy.Decay();
+            nourishment.Decay();
+            excretion.Decay();
+            social.Decay();
+            aspirational.Decay();
+
+            emotional.Set(emotionalState.Joy);
+            situational.ApplySituationChange(situation);
+
+            CalculateMentalWellbeing();
+            UpdateHealth();
+            CalculateMentalPhysicalbeing();
+            CalculateTotalWellbeing();
+        }
+
+
+        private void UpdateHealth() {
+            float decay = ((nourishment.GetLowness() + (energy.GetLowness() * 0.2f))
+                            + (((Mathf.Max(0.35f - mentalWellbeing, 0.0f)) * 0.2f)) * 0.5f);
+            if(decay > 0) health.SituationalDecay(decay);
+            else health.SituationalIncrease(Mathf.Max(nourishment.GetGoodness(), energy.GetGoodness()));
+        }
+
+
+        private void CalculateMentalPhysicalbeing() {
+            physicalWellbeing = Mathf.Clamp(
+                                ((energy.Value * energy.GetDrive()) + (nourishment.Value * nourishment.GetDrive())
+                                        + (excretion.Value * excretion.GetDrive()) + (health.Value * health.GetDrive()))
+                                    / (energy.GetDrive() + nourishment.GetDrive()
+                                        + excretion.GetDrive() + health.GetDrive()),
+                                0, 1.0f);
+        }
+
+
+        private void CalculateMentalWellbeing() {
+            physicalWellbeing = Mathf.Clamp(
+                                ((social.Value * social.GetDrive()) + (emotional.Value * emotional.GetDrive())
+                                        + (situational.Value * situational.GetDrive())
+                                        + (aspirational.Value * aspirational.GetDrive()))
+                                    / (social.GetDrive() + emotional.GetDrive()
+                                        + situational.GetDrive() + aspirational.GetDrive()),
+                                0, 1.0f);
+        }
+
+
+        private void CalculateTotalWellbeing() {
+            float physicalDrive = (1.2f - physicalWellbeing) / Mathf.Clamp(physicalWellbeing, 0.01f, 0.5f);
+            float mentalDrive = ((1.2f - mentalWellbeing) / Mathf.Clamp(mentalWellbeing, 0.01f, 0.5f));
+            totalWellbeing = Mathf.Clamp(
+                    ((physicalWellbeing * physicalDrive) + (mentalWellbeing * mentalDrive))
+                        / (physicalDrive + mentalDrive),
+                    0.0f, 1.0f);
+        }
+
+
+    }
+
+
+
+}

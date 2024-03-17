@@ -1,9 +1,12 @@
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
 namespace CharacterModel {
 
+
+    [Serializable]
     public class Need {
         const float TIME_SCALE = 60f; // FIXME: Connect to universal time scale
         [SerializeField] [HideInInspector] float value;
@@ -12,6 +15,13 @@ namespace CharacterModel {
 
 
         public float Value => value;
+
+
+        public Need(float decayRate, float importance) {
+            value = 1.0f;
+            this.decayRate = decayRate;
+            this.importance = importance;
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -26,6 +36,26 @@ namespace CharacterModel {
         /// </summary>
         public void Decay() {
             value -= (decayRate * Time.deltaTime) / TIME_SCALE;
+            Bound();
+        }
+
+
+        /// <summary>
+        /// For needs that decay under certain circumstances, such health of certain other needs are low
+        /// </summary>
+        /// <param name="rate"></param>
+        public void SituationalDecay(float rate) {
+            value -= (rate * Time.deltaTime) / TIME_SCALE;
+            Bound();
+        }
+
+
+        /// <summary>
+        /// The reverse of SituationalDecay(), mostly to make it extra clear what it represents.
+        /// </summary>
+        /// <param name="rate"></param>
+        public void SituationalIncrease(float rate) {
+            value += (rate * Time.deltaTime) / TIME_SCALE;
             Bound();
         }
 
@@ -99,6 +129,13 @@ namespace CharacterModel {
         public float GetDrive() {
             return ((1.2f - value) / Mathf.Clamp(value, 0.01f, 0.5f) * importance);
         }
+
+
+        public bool IsLow() => value < 0.35f;
+
+        public float GetLowness() => Mathf.Max(0.35f - value, 0.0f);
+
+        public float GetGoodness() => Mathf.Max(value - 0.65f, 0.0f);
 
 
     }
