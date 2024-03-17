@@ -1,5 +1,6 @@
-using System.Runtime.CompilerServices;
+using kfutils.UI;
 using UnityEngine;
+using System;
 
 
 namespace CharacterModel {
@@ -39,6 +40,27 @@ namespace CharacterModel {
 
 
     public class CoreNeeds {
+
+        public struct NeedsPacket {
+            public readonly float energy, nourishment, excretion, health, social, emotional, situational, aspirational,
+                                  physWellbeing, psychWellbeing, wellbeing ;
+            public NeedsPacket(float energy, float nourishment, float excretion, float health,
+                               float social, float emotional, float situational, float aspirational,
+                               float physWellbeing, float psychWellbeing, float wellbeing) {
+                this.energy = energy;
+                this.nourishment = nourishment;
+                this.excretion = excretion;
+                this.health = health;
+                this.social = social;
+                this.emotional = emotional;
+                this.situational = situational;
+                this.aspirational = aspirational;
+                this.physWellbeing = physWellbeing;
+                this.psychWellbeing = psychWellbeing;
+                this.wellbeing = wellbeing;
+            }
+        }
+
         // Physical Needs
         [SerializeField] Need energy = new Need(0.03f, 2.0f);
         [SerializeField] Need nourishment = new Need(0.015f, 5.0f);
@@ -111,6 +133,13 @@ namespace CharacterModel {
                     ((physicalWellbeing * physicalDrive) + (mentalWellbeing * mentalDrive))
                         / (physicalDrive + mentalDrive),
                     0.0f, 1.0f);
+        }
+
+
+        public NeedsPacket RetrieveData() {
+            return new NeedsPacket(energy.Value, nourishment.Value, excretion.Value, health.Value,
+                                   social.Value, emotional.Value, situational.Value, aspirational.Value,
+                                   physicalWellbeing, mentalWellbeing, totalWellbeing);
         }
 
 

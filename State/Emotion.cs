@@ -13,7 +13,17 @@ namespace CharacterModel {
     /// it work better and make more sense ase a game.  Notably, fear and surprize are swaped
     /// and the positive axis goes through "love."
     /// </summary>
-    public struct Emotion : IUIDataProvider<(Color color, EEmotionType type)> {
+    public struct Emotion {
+
+        public struct EmotionPacket {
+            public readonly Color color;
+            public readonly EEmotionType type;
+            public EmotionPacket(Color color, EEmotionType type) {
+                this.color = color;
+                this.type = type;
+            }
+        }
+
 
         // Some directional units
         const float SQRT2  = 0.707106781187f;
@@ -47,15 +57,37 @@ namespace CharacterModel {
 
         public Color GetColor() {
             float hue = GetEmotionColorAngle();
-            float strength = Magnitude();
-            float saturation = Mathf.Clamp(Strength, 0.0f, 1.0f);
-            float value = Mathf.Clamp(((Strength * 0.25f) + 0.5f), 0.5f, 1.0f);
+            float strength = Strength;
+            float saturation = Mathf.Clamp(strength, 0.0f, 1.0f);
+            float value = Mathf.Clamp(((strength * 0.25f) + 0.5f), 0.5f, 1.0f);
             return Color.HSVToRGB(hue, saturation, value);
         }
 
 
-        public ValueTuple<Color, EEmotionType> RetrieveData() {
-            return (color: GetColor(), type: EmotionType.GetTypeOfEmotion(this));
+        public Color GetColor(float emoWellbeing) {
+            return GetColorStatic(Mathf.Min(positivity, (emoWellbeing * 4.0f) - 1.0f), avoidance);
+        }
+
+
+        public static Color GetColorStatic(float positivity, float avoidance) {
+            float angle = Mathf.Atan2(avoidance, positivity)  / TWOPI;
+            angle += 0.5f;
+            if(angle > 1.0f) angle -= 1.0f;
+            float hue = 1.0f - angle;
+            float strength = Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
+            float saturation = Mathf.Clamp(strength, 0.0f, 1.0f);
+            float value = Mathf.Clamp(((strength * 0.25f) + 0.5f), 0.5f, 1.0f);
+            return Color.HSVToRGB(hue, saturation, value);
+        }
+
+
+        public EmotionPacket RetrieveData() {
+            return new EmotionPacket(GetColor(), EmotionType.GetTypeOfEmotion(this));
+        }
+
+
+        public EmotionPacket RetrieveData(float emoWellbeing) {
+            return new EmotionPacket(GetColor(emoWellbeing), EmotionType.GetTypeOfEmotion(this));
         }
 
 
@@ -108,9 +140,7 @@ namespace CharacterModel {
         }
 
 
-        public float Magnitude() {
-            return Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
-        }
+        public float Magnitude => Strength;
 
 
         public float Dot(Emotion a, Emotion b) {
@@ -121,7 +151,7 @@ namespace CharacterModel {
         // TODO: Profile to see if this is to see if it is too computationally expensive to be practical if called frequently at scale
         // Prefered way to do it
         public void BoundCircular() {
-            float size = Magnitude();
+            float size = Strength;
             float factor = Mathf.Min(size, BOUND) / size;
             positivity *= factor;
             avoidance *= factor;

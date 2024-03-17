@@ -12,21 +12,22 @@ namespace CharacterModel {
         [SerializeField] [HideInInspector] float value;
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
-
+        [SerializeField] float minValue = 0.0f;
 
         public float Value => value;
 
 
-        public Need(float decayRate, float importance) {
+        public Need(float decayRate, float importance, float minimum = 0.0f) {
             value = 1.0f;
             this.decayRate = decayRate;
             this.importance = importance;
+            minValue = minimum;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Bound() {
-            value = Mathf.Clamp(value,0.0f, 1.0f);
+            value = Mathf.Clamp(value, minValue, 1.0f);
         }
 
 
@@ -101,6 +102,11 @@ namespace CharacterModel {
         /// </summary>
         public void Set(float amount) {
             value = Mathf.Clamp(amount,  0.0f, 1.0f);
+        }
+
+
+        public void SetMinValue(float minimum) {
+            minValue = minimum;
         }
 
 
