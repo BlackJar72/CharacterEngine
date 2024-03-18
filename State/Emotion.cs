@@ -8,6 +8,24 @@ using System;
 
 namespace CharacterModel {
 
+    /*
+    How to actually create and change emotions (instead of just represent them), current idea:
+
+    The characters emotions should have both a current emotion and one that is tracked to (similar to how
+    the Situational need tracks a target).
+
+    When in emotion inspiring event occurs, both the real and the tracked emotion are updated, and the a representation
+    of the emotion, including its dimensions and expiration time (in world time), is added to a list.
+
+    The list is iterated (either every frame or on a custom AI tick which could be staggered) and any whose expiration
+    has past will be remove from the list and their dimensions subtracted from the tracked emotion (but NOT the real
+    emotion).
+
+    During the same emotion update (whether per frame / engine update or less frequent custom tick) the emotion moves
+    closer to the target -- preferable in a mix a relative and constant components.  This way emotions fade slowly,
+    rather than ping-ponging around as effects are added and removed.
+    */
+
     /// <summary>
     /// Based loosely on Plutnicks color wheel of emotions, but with some liberties to have
     /// it work better and make more sense ase a game.  Notably, fear and surprize are swaped
