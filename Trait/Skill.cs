@@ -78,7 +78,7 @@ namespace CharacterModel {
         /// </summary>
         /// <param name="attribute"></param> The AbilityScore, or similar, from which the bonus applies
         public void SetBonus(int attribute) {
-            bonus = Mathf.Log(attribute - 10, 1.58489319246f);
+            bonus = Mathf.Pow(1.58489319246f, (attribute / 5) - 2);
         }
 
 

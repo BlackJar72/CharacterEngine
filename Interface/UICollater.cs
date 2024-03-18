@@ -4,7 +4,7 @@ using System;
 namespace CharacterModel.UI {
 
 
-    public class UICollater {
+    public class UICollator {
         Emotion emotion;
         CoreNeeds needs;
 
