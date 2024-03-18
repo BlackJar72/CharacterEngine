@@ -77,7 +77,7 @@ namespace CharacterModel {
         /// This should be called after character creation or after certain age-ups
         /// </summary>
         /// <param name="attribute"></param> The AbilityScore, or similar, from which the bonus applies
-        public void SetBonus(int attribute) {
+        public void SetBonus(float attribute) {
             bonus = Mathf.Pow(1.58489319246f, (attribute / 5) - 2);
         }
 
