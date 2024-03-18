@@ -70,7 +70,7 @@ namespace CharacterModel {
         public const string INDUSTRIOUS_TXT = "Those who score high are motivated, organized, and like to get the " +
                                               "job done right. They have tendencies to work-a-holism and " +
                                               "perfectionism. Those who score lower have a more relaxed attitude " +
-                                              "toward work and gols, and tend to cut corners when they can.";
+                                              "toward work and goals, and tend to cut corners when they can.";
 
         public static readonly string[] CORE_TRAIT_TEXTS
                 = {OPEN_TXT, MORAL_TXT, EXTROVERT_TXT, SENSITIVE_TXT, EMOTIONAL_TXT, INDUSTRIOUS_TXT};
@@ -78,6 +78,19 @@ namespace CharacterModel {
         public static string GetText(CoreTraits trait) => CORE_TRAIT_TEXTS[(int)trait];
         public static string GetText(int index) => CORE_TRAIT_TEXTS[index];
 
+    }
+
+
+    public struct CoreTraitIntPacket {
+        public readonly float open, moral, extrovert, sensitive, emotional, industrious;
+        public CoreTraitIntPacket(int open, int moral, int extrovert, int sensitive, int emotional, int industrious) {
+            this.open = open;
+            this.moral = moral;
+            this.extrovert = extrovert;
+            this.sensitive = sensitive;
+            this.emotional = emotional;
+            this.industrious = industrious;
+        }
     }
     #endregion
 

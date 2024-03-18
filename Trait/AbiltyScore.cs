@@ -61,6 +61,18 @@ namespace CharacterModel {
         public static string GetText(int index) => TALENT_TEXTS[index];
 
     }
+
+
+    public struct TalentIntPacket {
+        public readonly int physical, intellectual, practical, creative, social;
+        public TalentIntPacket(int physical, int intellectual, int practical, int creative, int social) {
+            this.physical = physical;
+            this.intellectual = intellectual;
+            this.practical = practical;
+            this.creative = creative;
+            this.social = social;
+        }
+    }
 #endregion
 
 }

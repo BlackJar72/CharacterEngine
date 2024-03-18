@@ -7,6 +7,15 @@ namespace CharacterModel {
 
     public class Personality : MonoBehaviour {
 
+        public struct PersonalityPacket {
+            public readonly CoreTraitIntPacket coreTraits;
+            public readonly TalentIntPacket talents;
+            public PersonalityPacket(CoreTraitIntPacket coreTraits, TalentIntPacket talents) {
+                this.coreTraits = coreTraits;
+                this.talents = talents;
+            }
+        }
+
         public const int MAX_NUM_QUIRKS = 6;
         public const int MAX_TRAIT = 20;
         public const int AVG_TRAIT = 10;
