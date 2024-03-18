@@ -1,10 +1,11 @@
-using System;
+using UnityEngine;
 
 
 namespace CharacterModel.UI {
 
 
     public class UICollator {
+        Personality personality;
         Emotion emotion;
         CoreNeeds needs;
 
@@ -13,6 +14,11 @@ namespace CharacterModel.UI {
         public void GetData() {
             CoreNeeds.NeedsPacket needData = needs.RetrieveData();
             Emotion.EmotionPacket emotionData = emotion.RetrieveData(needData.psychWellbeing);
+        }
+
+
+        public static Color GetNeedColor(float need) {
+            return Color.HSVToRGB(Mathf.Clamp(need * need, 0.0f, 0.5f), 1.0f, (need * 0.5f) + 0.5f);
         }
 
 

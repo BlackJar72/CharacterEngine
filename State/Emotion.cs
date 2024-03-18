@@ -55,34 +55,20 @@ namespace CharacterModel {
         public float Joy        => positivity / BOUND;
 
 
-        public Color GetColor() {
-            float hue = GetEmotionColorAngle();
-            float strength = Strength;
-            float saturation = Mathf.Clamp(strength, 0.0f, 1.0f);
-            float value = Mathf.Clamp(((strength * 0.25f) + 0.5f), 0.5f, 1.0f);
-            return Color.HSVToRGB(hue, saturation, value);
-        }
-
-
         public Color GetColor(float emoWellbeing) {
             return GetColorStatic(Mathf.Min(positivity, (emoWellbeing * 4.0f) - 1.0f), avoidance);
         }
 
 
         public static Color GetColorStatic(float positivity, float avoidance) {
-            float angle = Mathf.Atan2(avoidance, positivity)  / TWOPI;
-            angle += 0.5f;
-            if(angle > 1.0f) angle -= 1.0f;
+            float angle = Mathf.Atan2(avoidance, -positivity)  / TWOPI;
+            angle += 0.25f;
+            angle = angle - Mathf.Floor(angle);
             float hue = 1.0f - angle;
             float strength = Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
             float saturation = Mathf.Clamp(strength, 0.0f, 1.0f);
             float value = Mathf.Clamp(((strength * 0.25f) + 0.5f), 0.5f, 1.0f);
             return Color.HSVToRGB(hue, saturation, value);
-        }
-
-
-        public EmotionPacket RetrieveData() {
-            return new EmotionPacket(GetColor(), EmotionType.GetTypeOfEmotion(this));
         }
 
 
@@ -102,7 +88,7 @@ namespace CharacterModel {
         static readonly Emotion UFEAR   = new Emotion(-SIN225,  COS225);
         static readonly Emotion USAD    = new Emotion(-COS225,  SIN225);
         static readonly Emotion UGROSS  = new Emotion(-COS225, -SIN225);
-        static readonly Emotion USRAGE  = new Emotion(-SIN225, -COS225);
+        static readonly Emotion URAGE   = new Emotion(-SIN225, -COS225);
         static readonly Emotion UFOCUS  = new Emotion( SIN225, -COS225);
 
         // Unit feeling vectors -- secondary
@@ -115,6 +101,29 @@ namespace CharacterModel {
         static readonly Emotion UAGRRO  = new Emotion(0,  -1);
         static readonly Emotion UHOPE   = new Emotion( SQRT2,  -SQRT2);
 
+#region testing
+        public static (float, float) GetTestVlues(EEmotionType which) {
+            switch (which) {
+                case EEmotionType.SURPRISED:
+                    return (UAMAZE.positivity, UAMAZE.avoidance);
+                case EEmotionType.CONNECTED:
+                    return (UTRUST.positivity, UTRUST.avoidance);
+                case EEmotionType.HAPPY:
+                    return (UHAPPY .positivity, UHAPPY .avoidance);
+                case EEmotionType.INTERESTED:
+                    return (UFOCUS.positivity, UFOCUS.avoidance);
+                case EEmotionType.ANGER:
+                    return (URAGE.positivity, URAGE.avoidance);
+                case EEmotionType.DISGUST:
+                    return (UGROSS.positivity, UGROSS.avoidance);
+                case EEmotionType.SADNESS:
+                    return (USAD.positivity, USAD.avoidance);
+                case EEmotionType.FEAR:
+                    return (UFEAR.positivity, UFEAR.avoidance);
+                default: return (0, 0);
+            }
+        }
+#endregion
 
         public Emotion(float positivity, float avoidance) {
             this.positivity = positivity;
@@ -123,15 +132,9 @@ namespace CharacterModel {
 
 
         public float GetEmotionAngle() {
-            return  Mathf.Atan2(avoidance, positivity);
-        }
-
-
-        public float GetEmotionColorAngle() {
-            float angle = Mathf.Atan2(avoidance, positivity)  / TWOPI;
-            angle += 0.5f;
-            if(angle > 1.0f) angle -= 1.0f;
-            return 1.0f - angle;
+            float angle = Mathf.Atan2(Positivity, avoidance)  / TWOPI;
+            angle = angle - Mathf.Floor(angle);
+            return angle;
         }
 
 
