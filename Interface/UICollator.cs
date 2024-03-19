@@ -6,7 +6,7 @@ namespace CharacterModel.UI {
 
     public class UICollator {
         Personality personality;
-        Emotion emotion;
+        EmotionalState emotion;
         CoreNeeds needs;
 
 

@@ -36,7 +36,7 @@ namespace CharacterModel {
         /// For simple needs that just decay over time; may be used as part of some less complex needs
         /// </summary>
         public void Decay() {
-            value -= (decayRate * Time.deltaTime) / TIME_SCALE;
+            value -= (decayRate * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             Bound();
         }
 
@@ -46,7 +46,7 @@ namespace CharacterModel {
         /// </summary>
         /// <param name="rate"></param>
         public void SituationalDecay(float rate) {
-            value -= (rate * Time.deltaTime) / TIME_SCALE;
+            value -= (rate * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             Bound();
         }
 
@@ -56,7 +56,7 @@ namespace CharacterModel {
         /// </summary>
         /// <param name="rate"></param>
         public void SituationalIncrease(float rate) {
-            value += (rate * Time.deltaTime) / TIME_SCALE;
+            value += (rate * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             Bound();
         }
 
@@ -68,7 +68,7 @@ namespace CharacterModel {
         /// for needs that recharge slowly during activities like sleeping or eating.
         /// </summary>
         public void ApplySituationChange(float amount) {
-            value += (amount * Time.deltaTime) / TIME_SCALE;
+            value += (amount * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             Bound();
         }
 
@@ -78,7 +78,7 @@ namespace CharacterModel {
         /// mostly for the Situational need (environment + comfort + entertainment)
         /// </summary>
         public void TrackTargetValue(float target) {
-            float amount = ((target - value) * Time.deltaTime) / TIME_SCALE;
+            float amount = ((target - value) * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             value += (amount * 0.25f) + Mathf.Max(amount, 0);
             Bound();
         }

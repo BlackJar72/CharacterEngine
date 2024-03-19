@@ -31,6 +31,7 @@ namespace CharacterModel {
     /// it work better and make more sense ase a game.  Notably, fear and surprize are swaped
     /// and the positive axis goes through "love."
     /// </summary>
+    [Serializable]
     public struct Emotion {
 
         public struct EmotionPacket {
@@ -56,7 +57,7 @@ namespace CharacterModel {
                 => new Emotion(a.positivity - b.positivity, a.avoidance - b.avoidance);
         public static Emotion operator*(Emotion a, Emotion b)
                 => new Emotion(a.positivity * b.positivity, a.avoidance * b.avoidance);
-        public static Emotion operator+(Emotion a, float b)
+        public static Emotion operator*(Emotion a, float b)
                 => new Emotion(a.positivity * b, a.avoidance * b);
         public static Emotion operator/(Emotion a, Emotion b)
                 => new Emotion(a.positivity / b.positivity, a.avoidance / b.avoidance);
@@ -96,28 +97,28 @@ namespace CharacterModel {
 
 
         // Emotional Axes
-        static readonly Emotion UPOSITIVE   = new Emotion( 1, 0);
-        static readonly Emotion UAVOIDANCE  = new Emotion( 0, 1);
+        public static readonly Emotion UPOSITIVE   = new Emotion( 1, 0);
+        public static readonly Emotion UAVOIDANCE  = new Emotion( 0, 1);
 
         // Unit feeling vectors -- primary
-        static readonly Emotion UHAPPY  = new Emotion( COS225, -SIN225);
-        static readonly Emotion UTRUST  = new Emotion( COS225,  SIN225);
-        static readonly Emotion UAMAZE  = new Emotion( SIN225,  COS225);
-        static readonly Emotion UFEAR   = new Emotion(-SIN225,  COS225);
-        static readonly Emotion USAD    = new Emotion(-COS225,  SIN225);
-        static readonly Emotion UGROSS  = new Emotion(-COS225, -SIN225);
-        static readonly Emotion URAGE   = new Emotion(-SIN225, -COS225);
-        static readonly Emotion UFOCUS  = new Emotion( SIN225, -COS225);
+        public static readonly Emotion UHAPPY  = new Emotion( COS225, -SIN225);
+        public static readonly Emotion UTRUST  = new Emotion( COS225,  SIN225);
+        public static readonly Emotion UAMAZE  = new Emotion( SIN225,  COS225);
+        public static readonly Emotion UFEAR   = new Emotion(-SIN225,  COS225);
+        public static readonly Emotion USAD    = new Emotion(-COS225,  SIN225);
+        public static readonly Emotion UGROSS  = new Emotion(-COS225, -SIN225);
+        public static readonly Emotion URAGE   = new Emotion(-SIN225, -COS225);
+        public static readonly Emotion UFOCUS  = new Emotion( SIN225, -COS225);
 
         // Unit feeling vectors -- secondary
-        static readonly Emotion ULOVE   = new Emotion( 1, 0);
-        static readonly Emotion USUB    = new Emotion( SQRT2,  SQRT2);
-        static readonly Emotion UAWE    = new Emotion( 0,  1);
-        static readonly Emotion UNOLIKE = new Emotion(-SQRT2, SQRT2);
-        static readonly Emotion UBAD    = new Emotion(-1,  0);
-        static readonly Emotion UHATE   = new Emotion(-SQRT2, -SQRT2);
-        static readonly Emotion UAGRRO  = new Emotion(0,  -1);
-        static readonly Emotion UHOPE   = new Emotion( SQRT2,  -SQRT2);
+        public static readonly Emotion ULOVE   = new Emotion( 1, 0);
+        public static readonly Emotion USUB    = new Emotion( SQRT2,  SQRT2);
+        public static readonly Emotion UAWE    = new Emotion( 0,  1);
+        public static readonly Emotion UNOLIKE = new Emotion(-SQRT2, SQRT2);
+        public static readonly Emotion UBAD    = new Emotion(-1,  0);
+        public static readonly Emotion UHATE   = new Emotion(-SQRT2, -SQRT2);
+        public static readonly Emotion UAGRRO  = new Emotion(0,  -1);
+        public static readonly Emotion UHOPE   = new Emotion( SQRT2,  -SQRT2);
 
 #region testing
         public static (float, float) GetTestVlues(EEmotionType which) {
@@ -169,8 +170,29 @@ namespace CharacterModel {
         }
 
 
+        public Emotion GetNormalized() {
+            float str = Strength;
+            if(Strength > 0) {
+                return new Emotion(positivity / str, avoidance / str);
+            } else {
+                return new Emotion(0, 0);
+            }
+        }
+
+
+        /// <summary>
+        /// Directly set the emotional dimensions, for the purpose of saving and loading.
+        /// </summary>
+        /// <param name="positivity"></param>
+        /// <param name="avoidance"></param>
+        public void Set(float positivity, float avoidance) {
+            this.positivity = positivity;
+            this.avoidance = avoidance;
+        }
+
+
         // TODO: Profile to see if this is to see if it is too computationally expensive to be practical if called frequently at scale
-        // Prefered way to do it
+        // Preferred way to do it...?
         public void BoundCircular() {
             float size = Strength;
             float factor = Mathf.Min(size, BOUND) / size;
@@ -183,6 +205,16 @@ namespace CharacterModel {
         public void BoundSimple() {
             positivity = Mathf.Clamp(positivity, -BOUND, BOUND);
             avoidance  = Mathf.Clamp(avoidance, -BOUND, BOUND);
+        }
+
+
+        public void TrackTarget(Emotion target) {
+            Emotion dif = target - this;
+            Emotion norm = dif.GetNormalized();
+            positivity += ((dif.positivity  / (float)WorldTime.PER_4HOUR) * WorldTime.Instance.DeltaTime)
+                        + ((norm.positivity / (float)WorldTime.PER_DAY)   * WorldTime.Instance.DeltaTime);
+            avoidance  += ((dif.avoidance   / (float)WorldTime.PER_4HOUR) * WorldTime.Instance.DeltaTime)
+                        + ((norm.avoidance  / (float)WorldTime.PER_DAY)   * WorldTime.Instance.DeltaTime);
         }
 
     }

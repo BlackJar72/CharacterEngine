@@ -25,25 +25,26 @@ namespace CharacterModel {
         private static WorldTime instance;
 
         // This value could change with testing and development.
-        const double BASE_SCALE = 24;
+        public const double BASE_SCALE = 24;
 
         // Constants for calculating time units
-        const double PER_MINUTE = 60;
-        const double PER_HOUR   = PER_MINUTE * 60;
-        const double PER_DAY    = PER_HOUR * 24;
-        const double PER_WEEK   = PER_DAY * 7;
-        const double PER_MONTH  = PER_WEEK * 4;
+        public const double PER_MINUTE = 60;
+        public const double PER_HOUR   = PER_MINUTE * 60;
+        public const double PER_4HOUR  = PER_HOUR * 4;
+        public const double PER_DAY    = PER_HOUR * 24;
+        public const double PER_WEEK   = PER_DAY * 7;
+        public const double PER_MONTH  = PER_WEEK * 4;
 
         // Data
         private GameSpeeds speed;
         private double gameTime;
-        private float deltaTime;
-        private float scaledDeltaTime;
+        private float  baseDeltaTime;
+        private float  deltaTime;
         private double scaling;
 
         public double GameTime => gameTime;
+        public float  BaseDeltaTime => baseDeltaTime;
         public float  DeltaTime => deltaTime;
-        public float  ScaledDeltaTime => scaledDeltaTime;
 
         public double Minutes => gameTime / PER_MINUTE;
         public double Hours => gameTime / PER_HOUR;
@@ -92,8 +93,8 @@ namespace CharacterModel {
         /// called by a managers Update() method.
         /// </summary>
         public void UpdateTime() {
-            deltaTime = Time.unscaledDeltaTime;
-            scaledDeltaTime = deltaTime * (float)scaling;
+            baseDeltaTime = Time.unscaledDeltaTime;
+            deltaTime = baseDeltaTime * (float)scaling;
             gameTime += Time.unscaledDeltaTime * scaling;
         }
 
@@ -108,6 +109,15 @@ namespace CharacterModel {
 
 
         /// <summary>
+        /// Sets the game (world) time.  Intended to be used for loading saves.
+        /// </summary>
+        /// <param name="time"></param>
+        public void SetTime(double time) {
+            gameTime = time;
+        }
+
+
+        /// <summary>
         /// Allows the world time to be retrieved as a singleton.
         /// There doesn't need to be more than one global world time.
         /// </summary>
@@ -118,6 +128,19 @@ namespace CharacterModel {
         }
 
 
+        /// <summary>
+        /// A more convenient accessor, for situations when it is know the instance shold be known.
+        ///
+        /// Worldtime should be created when the game starts, this should be known, and this should
+        /// never be called out of game.  It is in a sense "unsafe," but properly used should not
+        /// be a problem and should avoid excessive conditional branching.
+        /// </summary>
+        public static WorldTime Instance => instance;
+
+
+        /// <summary>
+        /// Privazte constructor to insure the proper use as a singleton.
+        /// </summary>
         private WorldTime() {
             gameTime = 0;
             SetTimeScale(GameSpeeds.SPEED_NORMAL);

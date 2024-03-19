@@ -87,7 +87,7 @@ namespace CharacterModel {
         /// </summary>
         public void BeUsed() {
             // FIXME??? Get from manager?
-            lastUsed = WorldTime.GetWorldTime().Days;
+            lastUsed = WorldTime.Instance.Days;
         }
 
 
