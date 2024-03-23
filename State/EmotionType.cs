@@ -13,10 +13,15 @@ namespace CharacterModel {
 
 
         public static EEmotionType GetTypeOfEmotion(Emotion emotion) {
-            //if(!((emotion.Positivity == 0) && (emotion.Avoidance == 0)))
-                Debug.Log(emotion.GetEmotionAngle() + " -> " + ((int)(emotion.GetEmotionAngle() * NUM2EMO)));
-                return emotions[(int)(emotion.GetEmotionAngle() * NUM2EMO)];
-            //else return EEmotionType.HAPPY;
+            //Debug.Log(emotion.GetEmotionAngle() + " -> " + ((int)(emotion.GetEmotionAngle() * NUM2EMO)));
+            return emotions[(int)(emotion.GetEmotionAngle() * NUM2EMO)];
+        }
+
+
+        // For testing, must mirror non-static version exactly
+        public static EEmotionType GetTypeOfEmotion(float positivity, float avoidance) {
+            //Debug.Log(emotion.GetEmotionAngle() + " -> " + ((int)(emotion.GetEmotionAngle() * NUM2EMO)));
+            return emotions[(int)(Emotion.GetEmotionAngle(positivity, avoidance) * NUM2EMO)];
         }
 
 
@@ -36,18 +41,35 @@ namespace CharacterModel {
 
 
     public static class EmotionNames {
-        private static readonly string[] names = new string[]{
-            "Surprised",
-            "Connected",
-            "Happy",
-            "Interested",
-            "Angry",
-            "Disgusted",
-            "Sad",
-            "Frightened"
+        private static readonly string[][] names = new string[][]{
+            new string[]{"Amazement", "Inspired", "Amazed", "Awe-Struck" },
+            new string[]{"Connection", "Accepted", "Connected", "Loved" },
+            new string[]{"Happiness", "Happy", "Joyful", "Ecstatic" },
+            new string[]{"Interest", "Interested", "Entusiastic", "Fascinated" },
+            new string[]{"Anger", "Annoyed", "Angry", "Enraged" },
+            new string[]{"Disgust", "Put Off", "Disguested", "Appalled" },
+            new string[]{"Sadness", "Sad", "Sorrowful", "Dispairing" },
+            new string[]{"Fear", "Anxious", "Afraid", "Terrified" }
         };
 
-        public static string GetName(EEmotionType emotion) => names[(int)emotion];
+        public static readonly string[] neutrals = new string[] {"Indifferent", "Mixed"};
+
+        /// <summary>
+        /// Returns the names of the type / category of emotion.
+        /// </summary>
+        /// <param name="emotion"></param>
+        /// <returns></returns>
+        public static string GetName(EEmotionType emotion) => names[(int)emotion][0];
+
+        /// <summary>
+        /// Returns the name of the specific emotional state, including both type a strength (degree).
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="degree"></param>
+        /// <returns></returns>
+        public static string GetPreciseName(EEmotionType type, int degree) {
+            return names[(int)type][Mathf.Clamp(degree, 1, 3)];
+        }
     }
 
 

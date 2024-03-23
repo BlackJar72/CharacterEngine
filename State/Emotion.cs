@@ -37,9 +37,11 @@ namespace CharacterModel {
         public struct EmotionPacket {
             public readonly Color color;
             public readonly EEmotionType type;
-            public EmotionPacket(Color color, EEmotionType type) {
+            public readonly string name;
+            public EmotionPacket(Color color, EEmotionType type, string name) {
                 this.color = color;
                 this.type = type;
+                this.name = name;
             }
         }
 
@@ -79,6 +81,11 @@ namespace CharacterModel {
         }
 
 
+        public Color GetColorDirect(float realPositivity) {
+            return GetColorStatic(realPositivity, avoidance);
+        }
+
+
         public static Color GetColorStatic(float positivity, float avoidance) {
             float angle = Mathf.Atan2(avoidance, -positivity)  / TWOPI;
             angle += 0.25f;
@@ -92,7 +99,17 @@ namespace CharacterModel {
 
 
         public EmotionPacket RetrieveData(float emoWellbeing) {
-            return new EmotionPacket(GetColor(emoWellbeing), EmotionType.GetTypeOfEmotion(this));
+            float realPositivity = Mathf.Min(positivity, positivity * emoWellbeing);
+            float strength = Magnitude(realPositivity);
+            EEmotionType type = EmotionType.GetTypeOfEmotion(realPositivity, avoidance);
+            if(strength > 0.5f) {
+                return new EmotionPacket(GetColorDirect(realPositivity),
+                                         type, EmotionNames.GetPreciseName(type, Mathf.RoundToInt(strength)));
+            } else {
+                if((positivity - realPositivity) > 0.5) return new EmotionPacket(GetColorDirect(realPositivity),
+                        type, EmotionNames.neutrals[1]);
+                else return new EmotionPacket(GetColorDirect(realPositivity), type, EmotionNames.neutrals[0]);
+            }
         }
 
 
@@ -151,18 +168,44 @@ namespace CharacterModel {
 
 
         public float GetEmotionAngle() {
-            float angle = Mathf.Atan2(Positivity, avoidance)  / TWOPI;
+            float angle = Mathf.Atan2(positivity, avoidance)  / TWOPI;
             angle = angle - Mathf.Floor(angle);
             return angle;
         }
 
 
-        public float MagnitudeSq() {
-            return (positivity * positivity) + (avoidance * avoidance);
+        // For testing, must mirror non-static version exactly
+        public static float GetEmotionAngle(float positivity, float avoidance) {
+            float angle = Mathf.Atan2(positivity, avoidance)  / TWOPI;
+            angle = angle - Mathf.Floor(angle);
+            return angle;
         }
 
 
-        public float Magnitude => Strength;
+       //TODO: Set up a way to get the needs, either through direct access or a containing "Character" class if this is to be used for autonomy
+        public float MagnitudeSq() {
+            //float realPositivity = Mathf.Min(positivity, positivity * needs.Mental);
+            //return (realPositivity * realPositivity) + (avoidance * avoidance);
+            return (positivity * positivity) + (avoidance * avoidance);
+       }
+
+
+        public float MagnitudeSq(float realPositivity) {
+            return (realPositivity * realPositivity) + (avoidance * avoidance);
+        }
+
+
+        //TODO: Set up a way to get the needs, either through direct access or a containing "Character" class if this is to be used for autonomy
+        public float Magnitude() {
+            //float realPositivity = Mathf.Min(positivity, positivity * needs.Mental);
+            //return Mathf.Sqrt(realPositivity * realPositivity) + (avoidance * avoidance);
+            return Mathf.Sqrt(positivity * positivity) + (avoidance * avoidance);
+        }
+
+
+        public float Magnitude(float realPositivity) {
+            return Mathf.Sqrt(realPositivity * realPositivity) + (avoidance * avoidance);
+        }
 
 
         public float Dot(Emotion a, Emotion b) {

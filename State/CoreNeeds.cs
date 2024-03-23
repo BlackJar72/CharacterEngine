@@ -76,6 +76,10 @@ namespace CharacterModel {
         [SerializeField] float mentalWellbeing = 1.0f;
         [SerializeField] float totalWellbeing = 1.0f;
 
+        public float Physical => physicalWellbeing;
+        public float Mental => mentalWellbeing;
+        public float Wellbeing => totalWellbeing;
+
 
         [SerializeField] float situation = 0.0f; // the current target for the situational need to track
 
