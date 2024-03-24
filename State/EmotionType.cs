@@ -42,7 +42,7 @@ namespace CharacterModel {
 
     public static class EmotionNames {
         private static readonly string[][] names = new string[][]{
-            new string[]{"Amazement", "Inspired", "Amazed", "Awe-Struck" },
+            new string[]{"Amazement", "Surprised", "Amazed", "Awe-Struck" },
             new string[]{"Connection", "Accepted", "Connected", "Loved" },
             new string[]{"Happiness", "Happy", "Joyful", "Ecstatic" },
             new string[]{"Interest", "Interested", "Entusiastic", "Fascinated" },

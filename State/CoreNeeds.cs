@@ -38,7 +38,7 @@ namespace CharacterModel {
 //    Interests.
 ********************************************************************************************************/
 
-
+    [Serializable]
     public class CoreNeeds {
 
         public struct NeedsPacket {
@@ -96,7 +96,15 @@ namespace CharacterModel {
 
             CalculateMentalWellbeing();
             UpdateHealth();
-            CalculateMentalPhysicalbeing();
+            CalculatePhysicalbeing();
+            CalculateTotalWellbeing();
+        }
+
+
+        // For testing purposes only, allowing for the calculations without an actual game or complete character
+        public void UpdateWellbeingForTesting() {
+            CalculateMentalWellbeing();
+            CalculatePhysicalbeing();
             CalculateTotalWellbeing();
         }
 
@@ -109,7 +117,7 @@ namespace CharacterModel {
         }
 
 
-        private void CalculateMentalPhysicalbeing() {
+        private void CalculatePhysicalbeing() {
             physicalWellbeing = Mathf.Clamp(
                                 ((energy.Value * energy.GetDrive()) + (nourishment.Value * nourishment.GetDrive())
                                         + (excretion.Value * excretion.GetDrive()) + (health.Value * health.GetDrive()))
@@ -120,7 +128,7 @@ namespace CharacterModel {
 
 
         private void CalculateMentalWellbeing() {
-            physicalWellbeing = Mathf.Clamp(
+            mentalWellbeing = Mathf.Clamp(
                                 ((social.Value * social.GetDrive()) + (emotional.Value * emotional.GetDrive())
                                         + (situational.Value * situational.GetDrive())
                                         + (aspirational.Value * aspirational.GetDrive()))
