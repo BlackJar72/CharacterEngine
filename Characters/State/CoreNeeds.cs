@@ -81,7 +81,7 @@ namespace CharacterModel {
         public float Mental => mentalWellbeing;
         public float Wellbeing => totalWellbeing;
 
-        private Need[] allNeeds = new Need[];
+        private Need[] allNeeds;
 
         [SerializeField] float situation = 0.0f; // the current target for the situational need to track
 
