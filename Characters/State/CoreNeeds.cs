@@ -1,6 +1,7 @@
 using kfutils.UI;
 using UnityEngine;
 using System;
+using static CharacterModel.ENeeds;
 
 
 namespace CharacterModel {
@@ -69,7 +70,7 @@ namespace CharacterModel {
         // Psychological Needs
         [SerializeField] Need social = new Need(0.027f, 1.0f);
         [SerializeField] Need emotional = new Need(0.0f, 1.0f);
-        [SerializeField] Need situational = new Need(0.0f, 1.0f);
+        [SerializeField] Need situational = new Need(0.0f, 1.0f, 0.0f, true);
         [SerializeField] Need aspirational = new Need(0.0030154821598f, 0.5f);
 
         [SerializeField] float physicalWellbeing = 1.0f;
@@ -80,8 +81,14 @@ namespace CharacterModel {
         public float Mental => mentalWellbeing;
         public float Wellbeing => totalWellbeing;
 
+        private Need[] allNeeds = new Need[];
 
         [SerializeField] float situation = 0.0f; // the current target for the situational need to track
+
+
+        public CoreNeeds() {
+            allNeeds = new Need[]{energy, nourishment, excretion, health, social, emotional, situational, aspirational};
+        }
 
 
         public void UpdateNeeds(Emotion emotionalState) {
@@ -142,9 +149,9 @@ namespace CharacterModel {
             float physicalDrive = (1.2f - physicalWellbeing) / Mathf.Clamp(physicalWellbeing, 0.01f, 0.5f);
             float mentalDrive = ((1.2f - mentalWellbeing) / Mathf.Clamp(mentalWellbeing, 0.01f, 0.5f));
             totalWellbeing = Mathf.Clamp(
-                    ((physicalWellbeing * physicalDrive) + (mentalWellbeing * mentalDrive))
-                        / (physicalDrive + mentalDrive),
-                    0.0f, 1.0f);
+                                ((physicalWellbeing * physicalDrive) + (mentalWellbeing * mentalDrive))
+                                    / (physicalDrive + mentalDrive),
+                                0.0f, 1.0f);
         }
 
 
@@ -152,6 +159,39 @@ namespace CharacterModel {
             return new NeedsPacket(energy.Value, nourishment.Value, excretion.Value, health.Value,
                                    social.Value, emotional.Value, situational.Value, aspirational.Value,
                                    physicalWellbeing, mentalWellbeing, totalWellbeing);
+        }
+
+
+        public void AlterNeedGradual(NeedEffect effect, float timeForEffect) {
+            Need need = allNeeds[(int)effect.Need];
+            need.Add((effect.Effect / timeForEffect) * WorldTime.t.DeltaTime);
+        }
+
+
+        public void AlterNeedInstant(NeedEffect effect) {
+            Need need = allNeeds[(int)effect.Need];
+            need.Add(effect.Effect);
+        }
+
+
+        public void AddSituationalEffect(float effect) {
+            situation += effect;
+        }
+
+
+        public void RemoveSituationalEffect(float effect) {
+            situation -= effect;
+        }
+
+
+        /// <summary>
+        /// This is the one that will probably be used, collecting the total effects whenever situation changes;
+        /// for example, changing rooms, start/stopping using a comforting or entertaining item, etc.
+        /// </summary>
+        /// <param name="effects"></param>
+        public void SetSituation(float[] effects) {
+            situation = 0.0f;
+            foreach(float effect in effects) situation += effect;
         }
 
 

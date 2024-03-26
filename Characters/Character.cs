@@ -11,6 +11,13 @@ namespace CharacterModel {
         [SerializeField] Personality personality;
         [SerializeField] CoreNeeds needs;
         [SerializeField] EmotionalState emotions;
+        [SerializeField] Preferences preferences;
+
+        public Personality Persona => personality;
+        public CoreNeeds Needs => needs;
+        public EmotionalState Emotions;
+        public Preferences prefs => preferences;
+
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CharacterModel {
 
-    public class Personality : MonoBehaviour {
+    public class Personality {
 
         public struct PersonalityPacket {
             public readonly CoreTraitIntPacket coreTraits;

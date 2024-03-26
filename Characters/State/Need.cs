@@ -13,11 +13,12 @@ namespace CharacterModel {
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
         [SerializeField] float minValue = 0.0f;
+        [SerializeField] bool  tracking = false;
 
         public float Value => value;
 
 
-        public Need(float decayRate, float importance, float minimum = 0.0f) {
+        public Need(float decayRate, float importance, float minimum = 0.0f, bool tracking = false) {
             value = 1.0f;
             this.decayRate = decayRate;
             this.importance = importance;
@@ -81,6 +82,20 @@ namespace CharacterModel {
             float amount = ((target - value) * WorldTime.Instance.DeltaTime) / TIME_SCALE;
             value += (amount * 0.25f) + Mathf.Max(amount, 0);
             Bound();
+        }
+
+
+        /// <summary>
+        /// Add a discrete amount to the need, as might happen if an action or in-game event changes the need by a
+        /// certain amount all at once.  This is intended for both increases and decreases; for decreases, just add
+        /// the number.
+        /// A likely common use (with a negative value) would be applying the effects of an injury to health
+        /// </summary>
+        public void AddSafe(float amount) {
+            if(!tracking) {
+                value += amount;
+                Bound();
+            }
         }
 
 

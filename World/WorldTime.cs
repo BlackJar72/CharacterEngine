@@ -136,6 +136,7 @@ namespace CharacterModel {
         /// be a problem and should avoid excessive conditional branching.
         /// </summary>
         public static WorldTime Instance => instance;
+        public static WorldTime t => instance;
 
 
         /// <summary>
