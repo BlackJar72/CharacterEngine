@@ -1,4 +1,4 @@
-# CharacterEngine
+# Character Engine
 
 Part of an abandoned Life Simulation Game project, which was hoped (with varying degrees of modification) could be adapted for use with other types of 
 games such as RPGs or (in a more simplified and streamlined form) city builders.
