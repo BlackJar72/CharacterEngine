@@ -19,6 +19,10 @@ sure how I'd go from a capsule making choices with a personality and emotions to
 
 ## License
 
+To cover my proverbial "butt" in case of the off-chance someone actually decides to do something with it and then claims some harm came from it, I am not 
+simply posting the source code (i.e., making the repository public) but placing under a real license, though a very permisive open-source license.  Specifically 
+this is under the MIT license.
+
 Copyright (C) 2022-2024 Jared Blackburn
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
