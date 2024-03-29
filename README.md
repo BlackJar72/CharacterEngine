@@ -3,10 +3,13 @@
 Part of an abandoned Life Simulation Game project, which was hoped (with varying degrees of modification) could be adapted for use with other types of 
 games such as RPGs or (in a more simplified and streamlined form) city builders.
 
+[Short Youtube Video](https://youtu.be/GfmP3FVFkZ0?si=blPPdZvNseqy7yf2)
+
 Basically, I did some "soul searching" and realized I didn't want to spend the next decade, or even the next few years, of my life working on a Sims 
 clone that, while possibly better to my own taste in a few specific ways would just have a lot less to and not as good over all.
 
 The other direction I was working on this from (and having a lot more trouble with) was the build-buy mode, found here:
+
 https://github.com/BlackJar72/PBBuildBuy
 
 I doubt I'll ever get anything out of it either way, and its likely no one will even look at it so that it will influence anything, but after all the work 
