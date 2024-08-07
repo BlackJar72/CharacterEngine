@@ -1,18 +1,18 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
 
     [Serializable]
     public class NeedSatisfier {
-        [SerializeField] NeedEffect effect;
+        [SerializeField] List<NeedEffect> effects;
         [Tooltip ("How long it takes to gain the full effect in world time.")]
         [SerializeField] float timeToUse;
+        [SerializeField] EPreferences actionType;
 
-        public NeedEffect Effect => effect;
+        public List<NeedEffect> Effects => effects;
         public float  TimeToUse => timeToUse;
 
     }

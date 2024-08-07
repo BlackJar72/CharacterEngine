@@ -9,13 +9,13 @@ namespace CharacterModel {
 
 
     [Serializable]
-    public class UsableItem : ScriptableObject {
-        [SerializeField] readonly EPreferences actionType;
-        [SerializeField] readonly float desirability;
-        [SerializeField] readonly NeedEffect[] needEffects;
-        [SerializeField] readonly float situationEffect;
+    public class UsableItem /*: ScriptableObject*/ {
+        [SerializeField] EPreferences actionType;
+        [SerializeField] float desirability;
+        [SerializeField] NeedEffect[] needEffects;
+        [SerializeField] float situationEffect;
         [SerializeField] readonly ISpecialEffect specialEffect;
-
+        
         public EPreferences type => actionType;
         public float Desirability => desirability;
         public NeedEffect[] NeedEffects => needEffects;
