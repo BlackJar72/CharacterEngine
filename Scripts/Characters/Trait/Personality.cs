@@ -34,11 +34,11 @@ namespace CharacterModel {
         [SerializeField] CoreTrait industrious; // Concientiousness, dumbed-down (though differently than that game that called it neat)
 
         //Talents, some inspiration from Holland Career Interest codes, though representing talents not interests
-        [SerializeField] AbiltyScore physical;
-        [SerializeField] AbiltyScore intellectual;
-        [SerializeField] AbiltyScore practical;
-        [SerializeField] AbiltyScore creative;
-        [SerializeField] AbiltyScore social;
+        [SerializeField] Talent physical;
+        [SerializeField] Talent intellectual;
+        [SerializeField] Talent practical;
+        [SerializeField] Talent creative;
+        [SerializeField] Talent social;
 
         // Minor traits / Quirks -- refers to small traits based on simple description
         List<MinorTrait> quirks;

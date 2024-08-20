@@ -16,8 +16,33 @@ namespace CharacterModel {
         public GeneticTrait Inborn => Inborn;
         public Skill Learned => experiential;
         public int Value => inborn.Value + Learned.Level;
+        // FIXME?  Not sure if I will keep this; to show real value or relative to average, that is the question
+        public int DisplayedValue => inborn.Value + Learned.Level - 10;
 
-        public float SignedModifier => (float)(Value - 10) / 10f;
+        public static CoreTrait FromValueInt(int value) {
+            int genetics = Mathf.Max(Mathf.Min(value - 5, 10), 0);
+            int learned = 5;
+            if(value < 5) learned = value;
+            if(value > 15) learned = value - 10;
+            CoreTrait output = new CoreTrait();
+            output.inborn = GeneticTrait.FromValueInt(genetics);
+            output.experiential.SetLevel(learned);
+            return output;
+        }
+
+        public static CoreTrait GenerateRandomly(bool randomizeExperience = true) {
+            CoreTrait output = new CoreTrait();
+            output.inborn = GeneticTrait.GetRandom();
+            if(randomizeExperience) {
+                // Produce a value ranging from 2 to 8 with moderate central tendency
+                output.experiential.SetLevel(Random.Range(1, 5) +
+                                             Random.Range(1, 5));
+            } else {
+                // Assign the most average value
+                output.experiential.SetLevel(5);
+            }
+            return output;
+        }
     }
 
 
@@ -93,6 +118,8 @@ namespace CharacterModel {
             this.industrious = industrious;
         }
     }
+
+
     #endregion
 
 }

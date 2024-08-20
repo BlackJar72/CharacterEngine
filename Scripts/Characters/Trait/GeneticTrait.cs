@@ -10,9 +10,11 @@ namespace CharacterModel {
         const float AVERAGE = REAL_MAX / 2.0f;
 
         [SerializeField] [Range(0, REAL_MAX)] float geneA = AVERAGE, geneB = AVERAGE, fake = AVERAGE;
+        [SerializeField] float raw;
+        [SerializeField] int value;
 
-        public float Raw => geneA + geneB + fake;
-        public int   Value => (int)(geneA + geneB + fake + 0.5f);
+        public float Raw => raw;
+        public int   Value => value;
 
         public float[] Data() => new float[]{geneA, geneB, fake}; 
 
@@ -23,10 +25,20 @@ namespace CharacterModel {
         }
 
 
+        /// <summary>
+        /// This must be called anything the gene values (including fake) are created or changed.
+        /// </summary>
+        private void UpdateValue() {
+            raw = geneA + geneB + fake;
+            value = Mathf.RoundToInt(raw);
+        }
+
+
         private GeneticTrait(float a, float b, float complexity) {
             geneA = a;
             geneB = b;
             fake  = complexity;
+            UpdateValue();
         }
 
 
@@ -34,6 +46,7 @@ namespace CharacterModel {
             geneA = AVERAGE;
             geneB = AVERAGE;
             fake  = AVERAGE;
+            UpdateValue();
         }
 
 
@@ -57,8 +70,22 @@ namespace CharacterModel {
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static GeneticTrait FromValueSimple(float value) {
+        public static GeneticTrait FromValueFloat(float value) {
             float part = Mathf.Clamp(value / 3f, 0, REAL_MAX);
+            return new GeneticTrait(part, part, part);
+        }
+
+
+        /// <summary>
+        /// Use to create a Genetic repressentation from a single value, such
+        /// as from player inpput.
+        /// This will create one with equal genes so as to produce intuitive
+        /// inheritence patterns.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static GeneticTrait FromValueInt(int value) {
+            float part = Mathf.Clamp(((float)value) / 3f, 0, REAL_MAX);
             return new GeneticTrait(part, part, part);
         }
 
@@ -75,6 +102,7 @@ namespace CharacterModel {
             if(CoinToss()) output.Crossover();
             if(Random.Range(0, 99) < mutationChance) output.Mutate();
             output.fake = Random.Range(0f, FAKE_MAX);
+            output.UpdateValue();
             return output;
         }
 
@@ -93,6 +121,15 @@ namespace CharacterModel {
                 geneB = Random.Range(0f, REAL_MAX);
             }
         }
+
+
+
+
+
+        #region Editor Helpers
+        public static int ValueFromGenesEd(float a, float b, float f) => Mathf.RoundToInt(a + b + f);
+        public static float GenesFromValueEd(int value) => ((float)value) / 3.0f;
+        #endregion
 
 
     }

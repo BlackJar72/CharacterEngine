@@ -109,6 +109,20 @@ namespace CharacterModel {
         }
 
 
+        public void SetLevel(int newLevel) {
+            if(newLevel > newLevel ) {
+                level = level;
+                xp = XPForLevelED(level);
+                float newMin = Mathf.Sqrt((float)xp);
+                minXp = Mathf.Max(minXp, newMin);
+            } else if (newLevel < level) {
+                level = newLevel;
+                xp = XPForLevelED(level);
+                float newMin = Mathf.Sqrt((float)xp);
+            }
+        }
+
+
         //TODO: Code for actually using the skill (success?  Speed?)
 
 
