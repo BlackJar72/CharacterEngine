@@ -1,6 +1,5 @@
 using kfutils.UI;
 using UnityEngine;
-using System;
 using static CharacterModel.ENeeds;
 using CharacterEngine;
 
@@ -40,7 +39,7 @@ namespace CharacterModel {
 //    Interests.
 ********************************************************************************************************/
 
-    [Serializable]
+    [System.Serializable]
     public class CoreNeeds {
 
         public struct NeedsPacket {

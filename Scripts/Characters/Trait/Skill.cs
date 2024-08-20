@@ -6,7 +6,8 @@ using CharacterEngine;
 
 namespace CharacterModel {
 
-    public struct Skill {
+    [System.Serializable]
+    public class Skill {
         // Constant representing base XP for skill levels
         // Values may change with development and testing
         public const double ZERO    = 0;
@@ -27,12 +28,12 @@ namespace CharacterModel {
 
 
         // DATA
-        private double xp;
-        private float minXp;
-        private int level;
-        private int highestReached;
-        private float bonus;
-        private double lastUsed;
+        [SerializeField][Range(0,10000)] double xp;
+        [SerializeField][Range(0,1000)] float minXp;
+        [SerializeField][Range(0,10)] public int level;
+        [SerializeField][Range(0,10)] int highestReached;
+        [SerializeField][Range(1.0f / 2.51188643151f, 2.51188643151f)] float bonus = 1;
+        [SerializeField] double lastUsed;
 
         public double XP => xp;
         public int Level => level;
@@ -109,6 +110,19 @@ namespace CharacterModel {
 
 
         //TODO: Code for actually using the skill (success?  Speed?)
+
+
+
+
+
+        #region Editor Helper
+        public static int LevelForXPEd(double xp)
+                => Mathf.Max(0, Mathf.FloorToInt(Mathf.Log((float)xp, 1.58489319246f) - 9));
+        public static double XPForLevelED(int level) {
+            if(level < 1) return 0.0;
+            else return Mathf.Pow(1.58489319246f, level - 1) * 100;
+        }
+        #endregion
 
     }
 

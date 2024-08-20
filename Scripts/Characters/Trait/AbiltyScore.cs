@@ -1,5 +1,4 @@
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
@@ -8,9 +7,10 @@ namespace CharacterModel {
     /// Represents a core, basic ability type.  Will probably be called
     /// "talents" in game.
     /// </summary>
+    [System.Serializable]
     public struct AbiltyScore {
-        private GeneticTrait inborn;
-        private Skill learnedSkill;
+        [SerializeField] GeneticTrait inborn;
+        [SerializeField] Skill learnedSkill;
 
         public GeneticTrait Inborn => Inborn;
         public Skill Learned => learnedSkill;

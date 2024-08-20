@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
 
+    [System.Serializable]
     public class Personality {
 
         public struct PersonalityPacket {
@@ -27,19 +26,19 @@ namespace CharacterModel {
         public const float F_MIN_TRAIT =  MIN_TRAIT;
 
         //Core Traits, base on HEXACO
-        CoreTrait open;
-        CoreTrait moral; // Honesty-Humility, but dumbed-down for non-psychologists
-        CoreTrait extroverted;
-        CoreTrait sensitive;
-        CoreTrait emotional;
-        CoreTrait industrious; // Concientiousness, dumbed-down (though differently than that game that called it neat)
+        [SerializeField] CoreTrait open;
+        [SerializeField] CoreTrait moral; // Honesty-Humility, but dumbed-down for non-psychologists
+        [SerializeField] CoreTrait extroverted;
+        [SerializeField] CoreTrait sensitive;
+        [SerializeField] CoreTrait emotional;
+        [SerializeField] CoreTrait industrious; // Concientiousness, dumbed-down (though differently than that game that called it neat)
 
         //Talents, some inspiration from Holland Career Interest codes, though representing talents not interests
-        AbiltyScore physical;
-        AbiltyScore intellectual;
-        AbiltyScore practical;
-        AbiltyScore creative;
-        AbiltyScore social;
+        [SerializeField] AbiltyScore physical;
+        [SerializeField] AbiltyScore intellectual;
+        [SerializeField] AbiltyScore practical;
+        [SerializeField] AbiltyScore creative;
+        [SerializeField] AbiltyScore social;
 
         // Minor traits / Quirks -- refers to small traits based on simple description
         List<MinorTrait> quirks;

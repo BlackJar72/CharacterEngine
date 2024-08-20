@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using CharacterEngine;
+using System;
 
 
 namespace CharacterModel {
@@ -13,6 +10,7 @@ namespace CharacterModel {
     // than using every influence every time, on every decision.  Essentially, a cached version of checking the
     // effects of all influences.  (The question is array keyed to list using or dictionary; EPreference should be
     // contiguous either way.)
+    [Serializable]
     public class Preferences {
 
 

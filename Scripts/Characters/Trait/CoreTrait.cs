@@ -1,5 +1,4 @@
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
@@ -9,9 +8,10 @@ namespace CharacterModel {
     /// An individual core personality trait.
     /// Very similar to Ability Score, but is used to represent something very different.
     /// </summary>
+    [System.Serializable]
     public struct CoreTrait {
-        private GeneticTrait inborn;
-        private Skill experiential;
+        [SerializeField] GeneticTrait inborn;
+        [SerializeField] Skill experiential;
 
         public GeneticTrait Inborn => Inborn;
         public Skill Learned => experiential;

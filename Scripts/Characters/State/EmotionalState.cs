@@ -1,13 +1,13 @@
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
 
+    [System.Serializable]
     public class EmotionalState {
-        private Emotion emotion = new Emotion();
-        private Emotion target  = new Emotion();
-        private EmotionalEffects effects = new EmotionalEffects();
+        [SerializeField] Emotion emotion = new Emotion();
+        [SerializeField] Emotion target  = new Emotion();
+        [SerializeField] EmotionalEffects effects = new EmotionalEffects();
 
 
 #region Wrappers

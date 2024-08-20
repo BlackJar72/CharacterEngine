@@ -10,7 +10,7 @@ namespace CharacterModel {
     [Serializable]
     public class Need {
         const float TIME_SCALE = 60f; // FIXME: Connect to universal time scale
-        [SerializeField] [HideInInspector] /*[Range(0, 1)]*/ float value;
+        [SerializeField] /*[HideInInspector]*/ [Range(0, 1)] float value;
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
         [SerializeField] float minValue = 0.0f;

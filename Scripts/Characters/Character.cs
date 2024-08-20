@@ -7,7 +7,7 @@ using System;
 
 namespace CharacterModel {
 
-    public class Character {
+    public class Character : MonoBehaviour {
         [SerializeField] Personality personality;
         [SerializeField] CoreNeeds needs;
         [SerializeField] EmotionalState emotions;

@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using CharacterEngine;
 
 
 namespace CharacterModel {
 
-    public struct GeneticTrait {
-        private float geneA, geneB, fake;
-
+    [System.Serializable]
+    public class GeneticTrait {
         const float REAL_MAX = 10.0f / 3.0f;
         const float FAKE_MAX = REAL_MAX;
+        const float AVERAGE = REAL_MAX / 2.0f;
+
+        [SerializeField] [Range(0, REAL_MAX)] float geneA = AVERAGE, geneB = AVERAGE, fake = AVERAGE;
 
         public float Raw => geneA + geneB + fake;
         public int   Value => (int)(geneA + geneB + fake + 0.5f);
@@ -31,10 +30,22 @@ namespace CharacterModel {
         }
 
 
+        private GeneticTrait() {
+            geneA = AVERAGE;
+            geneB = AVERAGE;
+            fake  = AVERAGE;
+        }
+
+
         public static GeneticTrait GetRandom() {
             return new GeneticTrait(Random.Range(0f, REAL_MAX),
                                     Random.Range(0f, REAL_MAX),
                                     Random.Range(0f, FAKE_MAX));
+        }
+
+
+        public static GeneticTrait GetAverage() {
+            return new GeneticTrait();
         }
 
 
