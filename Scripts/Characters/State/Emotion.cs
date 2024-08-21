@@ -68,7 +68,7 @@ namespace CharacterModel {
 
 
         //Data
-        float positivity, avoidance;
+        [SerializeField] float positivity, avoidance;
 
         public float Positivity => positivity;
         public float Avoidance  => avoidance;

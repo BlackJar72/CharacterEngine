@@ -55,6 +55,7 @@ namespace CharacterModel {
             }
 
             minXp.floatValue = Mathf.Max(Mathf.Sqrt((float)xp.doubleValue), minXp.floatValue);
+            highestReached.intValue = level.intValue;
 
             EditorGUI.EndProperty();
         }
