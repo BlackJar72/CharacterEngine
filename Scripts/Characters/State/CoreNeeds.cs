@@ -91,6 +91,9 @@ namespace CharacterModel {
         }
 
 
+        public Need GetNeed(ENeeds need) => allNeeds[(int)need];
+
+
         public void UpdateNeeds(Emotion emotionalState) {
             energy.Decay();
             nourishment.Decay();
@@ -100,6 +103,20 @@ namespace CharacterModel {
 
             emotional.Set(emotionalState.Joy);
             situational.ApplySituationChange(situation);
+
+            CalculateMentalWellbeing();
+            UpdateHealth();
+            CalculatePhysicalbeing();
+            CalculateTotalWellbeing();
+        }
+
+
+        public void UpdateNeedsTesting() {
+            energy.Decay();
+            nourishment.Decay();
+            excretion.Decay();
+            social.Decay();
+            aspirational.Decay();
 
             CalculateMentalWellbeing();
             UpdateHealth();
