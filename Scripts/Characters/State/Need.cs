@@ -9,21 +9,22 @@ namespace CharacterModel {
 
     [Serializable]
     public class Need {
-        const float TIME_SCALE = 60f; // FIXME: Connect to universal time scale
+        public const float TIME_SCALE = 6f; // FIXME: Connect to universal time scale
         [SerializeField] /*[HideInInspector]*/ [Range(0, 1)] float value;
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
         [SerializeField] float minValue = 0.0f;
-        [SerializeField] bool  tracking = false;
+        [SerializeField] bool depleting = false;
 
         public float Value => value;
 
 
-        public Need(float decayRate, float importance, float minimum = 0.0f, bool tracking = false) {
+        public Need(float decayRate, float importance, float minimum = 0.0f, bool tracking = true) {
             value = 1.0f;
             this.decayRate = decayRate;
             this.importance = importance;
             minValue = minimum;
+            this.depleting = tracking;
         }
 
 
@@ -98,7 +99,7 @@ namespace CharacterModel {
         /// A likely common use (with a negative value) would be applying the effects of an injury to health
         /// </summary>
         public void AddSafe(float amount) {
-            if(!tracking) {
+            if(depleting) {
                 value += amount;
                 Bound();
             }

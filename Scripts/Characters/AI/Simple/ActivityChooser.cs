@@ -11,15 +11,13 @@ namespace CharacterModel {
         [System.Serializable]
         public class ActivityChoice : IComparer<ActivityChoice>, System.IComparable<ActivityChoice> {
             [SerializeField] public Activity activity;
+            [SerializeField] public AbstractNeedEvaluator evaluator;
             public float desirability = 0;
-            public float GetDesirability(CoreNeeds needs) {
-                SetDesirability(needs);
-                return desirability;
-            }
+            public float GetDesirability(CoreNeeds needs, float situation)
+                                        => evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetDesirability(CoreNeeds needs) {
-                desirability = (activity.satisfaction + (activity.satisfaction / activity.timeToDo + 5)) *
-                needs.GetNeed(activity.need).GetDrive();
+            public void SetDesirability(CoreNeeds needs, float situation) {
+                evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
             }
             public static bool operator >(ActivityChoice a, ActivityChoice b) => a.desirability > b.desirability;
             public static bool operator <(ActivityChoice a, ActivityChoice b) => a.desirability < b.desirability;
@@ -39,6 +37,7 @@ namespace CharacterModel {
         [SerializeField] CoreNeeds needs;
 
         private float activityTimer = 0;
+        private float situation = 0;
 
         //Testing Stuff
         [SerializeField] GameObject testingPlaceShower;
@@ -58,20 +57,22 @@ namespace CharacterModel {
             if(activityTimer <= 0) {
                 currentChoice = Choose();
                 testingPlaceShower.transform.position = currentChoice.actorLocation.position;
-                testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
+                //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
                 activityTimer = currentChoice.timeToDo;
+                if(currentChoice.need == ENeeds.SITUATIONAL) situation = currentChoice.satisfaction;
+                else situation = 0.2f;
             } else {
                 //FIXME: Remember, in the real game anything similar must use worled (simulation) time, not engine game time!
                 activityTimer -= Time.deltaTime;
-                needs.GetNeed(currentChoice.need).Add((currentChoice.satisfaction / currentChoice.timeToDo) * Time.deltaTime);
+                needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo) * Time.deltaTime);
             }
-            needs.UpdateNeedsTesting();
+            needs.UpdateNeedsTesting(situation);
         }
 
 
         public void SortChoices() {
             foreach(ActivityChoice choice in choices) {
-                choice.SetDesirability(needs);
+                choice.SetDesirability(needs, situation);
 
             }
             choices.Sort();

@@ -1,4 +1,3 @@
-using kfutils.UI;
 using UnityEngine;
 using static CharacterModel.ENeeds;
 using CharacterEngine;
@@ -63,15 +62,15 @@ namespace CharacterModel {
         }
 
         // Physical Needs
-        [SerializeField] Need energy = new Need(0.03f, 2.0f);
-        [SerializeField] Need nourishment = new Need(0.015f, 5.0f);
-        [SerializeField] Need excretion = new Need(0.125f, 2.5f);
-        [SerializeField] Need health = new Need(0.0f, 0.75f);
+        [SerializeField] Need energy; // = new Need(0.03f, 1.2f);
+        [SerializeField] Need nourishment; // = new Need(0.015f, 1.5f);
+        [SerializeField] Need excretion; // = new Need(0.125f, 1.25f);
+        [SerializeField] Need health; // = new Need(0.0f, 0.75f, 0.0f, false);
         // Psychological Needs
-        [SerializeField] Need social = new Need(0.027f, 1.0f);
-        [SerializeField] Need emotional = new Need(0.0f, 1.0f);
-        [SerializeField] Need situational = new Need(0.0f, 1.0f, 0.0f, true);
-        [SerializeField] Need aspirational = new Need(0.0030154821598f, 0.5f);
+        [SerializeField] Need social; // = new Need(0.027f, 1.0f);
+        [SerializeField] Need emotional; // = new Need(0.0f, 1.0f, 0.0f, false);
+        [SerializeField] Need situational; // = new Need(0.0f, 1.0f, 0.0f, false);
+        [SerializeField] Need aspirational; // = new Need(0.0030154821598f, 0.5f);
 
         [SerializeField] float physicalWellbeing = 1.0f;
         [SerializeField] float mentalWellbeing = 1.0f;
@@ -86,7 +85,7 @@ namespace CharacterModel {
         [SerializeField] float situation = 0.0f; // the current target for the situational need to track
 
 
-        public CoreNeeds() {
+        public void Init() {
             allNeeds = new Need[]{energy, nourishment, excretion, health, social, emotional, situational, aspirational};
         }
 
@@ -111,12 +110,14 @@ namespace CharacterModel {
         }
 
 
-        public void UpdateNeedsTesting() {
+        public void UpdateNeedsTesting(float situation) {
             energy.Decay();
             nourishment.Decay();
             excretion.Decay();
             social.Decay();
             aspirational.Decay();
+
+            situational.TrackTargetValue(situation);
 
             CalculateMentalWellbeing();
             UpdateHealth();

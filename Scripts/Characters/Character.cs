@@ -47,6 +47,11 @@ namespace CharacterModel {
         }
 
 
+        void Awake() {
+            needs.Init();
+        }
+
+
         public override int GetHashCode() => (int)(id ^ (id >> 32));
         public override bool Equals(object other) {
             Character o = other as Character;
