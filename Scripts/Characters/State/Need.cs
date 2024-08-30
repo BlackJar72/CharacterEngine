@@ -9,11 +9,12 @@ namespace CharacterModel {
 
     [Serializable]
     public class Need {
-        public const float TIME_SCALE = 6f; // FIXME: Connect to universal time scale
+        public const float TIME_SCALE = 60f; // FIXME: Connect to universal time scale
         [SerializeField] /*[HideInInspector]*/ [Range(0, 1)] float value;
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
-        [SerializeField] float minValue = 0.0f;
+        [SerializeField][HideInInspector] float minValue = 0.0f;
+        [SerializeField] float driveOrigin = 1.2f;
         [SerializeField] bool depleting = false;
 
         public float Value => value;
@@ -155,7 +156,7 @@ namespace CharacterModel {
         /// increasingly intense, especially when entering the danger zone for complete depletion.
         /// </summary>
         public float GetDrive() {
-            return ((1.2f - value) / Mathf.Clamp(value, 0.05f, 0.5f) /* importance*/);
+            return (Mathf.Max((driveOrigin - value), 0f) / Mathf.Clamp(value, 0.05f, 0.5f) * importance);
         }
 
 

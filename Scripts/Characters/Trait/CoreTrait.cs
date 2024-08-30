@@ -11,10 +11,10 @@ namespace CharacterModel {
     [System.Serializable]
     public struct CoreTrait {
         [SerializeField] GeneticTrait inborn;
-        [SerializeField] Skill experiential;
+        [SerializeField] PersonalityDevelopment experiential;
 
         public GeneticTrait Inborn => Inborn;
-        public Skill Learned => experiential;
+        public PersonalityDevelopment Learned => experiential;
         public int Value => inborn.Value + Learned.Level;
         // FIXME?  Not sure if I will keep this; to show real value or relative to average, that is the question
         public int DisplayedValue => inborn.Value + Learned.Level - 10;

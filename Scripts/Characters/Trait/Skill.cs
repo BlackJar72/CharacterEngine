@@ -110,8 +110,8 @@ namespace CharacterModel {
 
 
         public void SetLevel(int newLevel) {
-            if(newLevel > newLevel ) {
-                level = level;
+            if(newLevel > level ) {
+                level = newLevel;
                 xp = XPForLevelED(level);
                 float newMin = Mathf.Sqrt((float)xp);
                 minXp = Mathf.Max(minXp, newMin);
@@ -119,6 +119,7 @@ namespace CharacterModel {
                 level = newLevel;
                 xp = XPForLevelED(level);
                 float newMin = Mathf.Sqrt((float)xp);
+                minXp = Mathf.Min(Mathf.Max(minXp, newMin), (float)XP_FOR_LEVELS[level]);
             }
         }
 
