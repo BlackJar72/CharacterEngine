@@ -76,6 +76,8 @@ namespace CharacterModel {
         [SerializeField] float mentalWellbeing = 1.0f;
         [SerializeField] float totalWellbeing = 1.0f;
 
+        public Character character;
+
         public float Physical => physicalWellbeing;
         public float Mental => mentalWellbeing;
         public float Wellbeing => totalWellbeing;
@@ -84,8 +86,14 @@ namespace CharacterModel {
 
         [SerializeField] float situation = 0.0f; // the current target for the situational need to track
 
+        public float Situation {
+            get => situation;
+            set {situation = value; }
+        }
 
-        public void Init() {
+
+        public void Init(Character owner) {
+            character = owner;
             allNeeds = new Need[]{energy, nourishment, excretion, health, social, emotional, situational, aspirational};
         }
 
@@ -93,14 +101,14 @@ namespace CharacterModel {
         public Need GetNeed(ENeeds need) => allNeeds[(int)need];
 
 
-        public void UpdateNeeds(Emotion emotionalState) {
+        public void UpdateNeeds() {
             energy.Decay();
             nourishment.Decay();
             excretion.Decay();
             social.Decay();
             aspirational.Decay();
 
-            emotional.Set(emotionalState.Joy);
+            emotional.Set(character.Emotions.EmotionalNeed);
             situational.ApplySituationChange(situation);
 
             CalculateMentalWellbeing();
@@ -110,13 +118,14 @@ namespace CharacterModel {
         }
 
 
-        public void UpdateNeedsTesting(float situation) {
+        public void UpdateNeedsTesting() {
             energy.Decay();
             nourishment.Decay();
             excretion.Decay();
             social.Decay();
             aspirational.Decay();
 
+            emotional.Set(character.Emotions.EmotionalNeed);
             situational.TrackTargetValue(situation);
 
             CalculateMentalWellbeing();

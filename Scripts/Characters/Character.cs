@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using kfutils.UI;
+//using kfutils.UI;
 using CharacterEngine;
 
 namespace CharacterModel {
@@ -48,7 +48,7 @@ namespace CharacterModel {
 
 
         void Awake() {
-            needs.Init();
+            needs.Init(this);
         }
 
 

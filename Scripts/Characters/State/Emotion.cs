@@ -46,11 +46,12 @@ namespace CharacterModel {
 
 
         // Some directional units
-        const float SQRT2  = 0.707106781187f;
-        const float COS225 = 0.923879532511f;
-        const float SIN225 = 0.382683432365f;
-        const float TWOPI  = 3.14159265359f * 2.0f;
-        const float BOUND  = 3.0f;
+        const float SQRT2   = 0.707106781187f;
+        const float COS225  = 0.923879532511f;
+        const float SIN225  = 0.382683432365f;
+        const float TWOPI   = 3.14159265359f * 2.0f;
+        const float BOUND   = 3.0f;
+        const float NEEDFAC = 0.5f / BOUND;
 
         public static Emotion operator+(Emotion a, Emotion b)
                 => new Emotion(a.positivity + b.positivity, a.avoidance + b.avoidance);
@@ -73,6 +74,7 @@ namespace CharacterModel {
         public float Avoidance  => avoidance;
         public float Strength   => Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
         public float Joy        => positivity / BOUND;
+        public float EmoNeed    => (Positivity * NEEDFAC) + 0.5f;
 
 
         public Color GetColor(float emoWellbeing) {

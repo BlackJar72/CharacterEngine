@@ -37,7 +37,6 @@ namespace CharacterModel {
         [SerializeField] CoreNeeds needs;
 
         private float activityTimer = 0;
-        private float situation = 0;
 
         //Testing Stuff
         [SerializeField] GameObject testingPlaceShower;
@@ -59,20 +58,20 @@ namespace CharacterModel {
                 testingPlaceShower.transform.position = currentChoice.actorLocation.position;
                 //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
                 activityTimer = currentChoice.timeToDo;
-                if(currentChoice.need == ENeeds.SITUATIONAL) situation = currentChoice.satisfaction;
-                else situation = 0.2f;
+                if(currentChoice.need == ENeeds.SITUATIONAL) needs.Situation = currentChoice.satisfaction;
+                else needs.Situation = 0.2f;
             } else {
                 //FIXME: Remember, in the real game anything similar must use worled (simulation) time, not engine game time!
                 activityTimer -= Time.deltaTime;
                 needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo) * Time.deltaTime);
             }
-            needs.UpdateNeedsTesting(situation);
+            needs.UpdateNeedsTesting();
         }
 
 
         public void SortChoices() {
             foreach(ActivityChoice choice in choices) {
-                choice.SetDesirability(needs, situation);
+                choice.SetDesirability(needs, needs.Situation);
 
             }
             choices.Sort();

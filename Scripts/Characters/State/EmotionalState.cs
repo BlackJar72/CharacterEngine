@@ -16,6 +16,8 @@ namespace CharacterModel {
         public float Strength   => emotion.Strength;
         public float Joy        => emotion.Joy;
 
+        public float EmotionalNeed => emotion.EmoNeed;
+
         public Color GetColor(float emoWellbeing) => emotion.GetColor(emoWellbeing);
         public Emotion.EmotionPacket RetrieveData(float emoWellbeing) => emotion.RetrieveData(emoWellbeing);
         public float GetEmotionAngle() => emotion.GetEmotionAngle();
