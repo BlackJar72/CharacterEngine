@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace CharacterModel {
 
@@ -37,16 +38,19 @@ namespace CharacterModel {
         [SerializeField] CoreNeeds needs;
 
         private float activityTimer = 0;
+        private bool  atLoction     = false;
 
         //Testing Stuff
         [SerializeField] GameObject testingPlaceShower;
         [SerializeField] Activity currentChoice;
+        [SerializeField] NavMeshAgent navAgent;
 
 
         // Start is called before the first frame update
         void Start()
         {
             needs = character.Needs;
+            navAgent = GetComponent<NavMeshAgent>();
         }
 
         // Update is called once per frame
@@ -60,13 +64,26 @@ namespace CharacterModel {
                 activityTimer = currentChoice.timeToDo * Need.TIME_SCALE;
                 if(currentChoice.need == ENeeds.SITUATIONAL) needs.Situation = currentChoice.satisfaction;
                 else needs.Situation = 0.2f;
+                navAgent.SetDestination(currentChoice.actorLocation.position);
+                atLoction = false;
+                testingPlaceShower.SetActive(false);
             } else {
                 //FIXME: Remember, in the real game anything similar must use worled (simulation) time, not engine game time!
-                activityTimer -= Time.deltaTime;
-                needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo) * Time.deltaTime);
+                if(atLoction) {
+                    activityTimer -= Time.deltaTime;
+                    needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo)
+                        * Time.deltaTime);
+                } else {
+                    atLoction = navAgent.remainingDistance < 0.1f;
+                    testingPlaceShower.SetActive(atLoction);
+                }
             }
             character.Emotions.EmoUpdate(Time.deltaTime);
             needs.UpdateNeedsTesting();
+            if(needs.GetNeed(ENeeds.HEALTH).Value == 0) {
+                GameObject.Destroy(gameObject);
+                Debug.Log("Character Died");
+            }
         }
 
 
