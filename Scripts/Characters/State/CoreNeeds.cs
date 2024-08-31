@@ -108,7 +108,7 @@ namespace CharacterModel {
             social.Decay();
             aspirational.Decay();
 
-            emotional.Set(character.Emotions.EmotionalNeed);
+            emotional.Set(character.Emotions.Joy);
             situational.ApplySituationChange(situation);
 
             CalculateMentalWellbeing();
@@ -125,7 +125,7 @@ namespace CharacterModel {
             social.Decay();
             aspirational.Decay();
 
-            emotional.Set(character.Emotions.EmotionalNeed);
+            emotional.Set(character.Emotions.Joy);
             situational.TrackTargetValue(situation);
 
             CalculateMentalWellbeing();

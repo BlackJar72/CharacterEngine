@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using kfutils.UI;
+//using kfutils.UI;
 using System;
 using CharacterEngine;
 
 
+
 namespace CharacterModel {
 
+    [System.Serializable]
     public class EmotionEffect {
         [SerializeField] Emotion effect;
         [SerializeField] double duration;
@@ -32,4 +34,5 @@ namespace CharacterModel {
             duration = emotionObject.Duration;
         }
     }
+
 }

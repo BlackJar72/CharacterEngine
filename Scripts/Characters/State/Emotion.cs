@@ -73,8 +73,7 @@ namespace CharacterModel {
         public float Positivity => positivity;
         public float Avoidance  => avoidance;
         public float Strength   => Mathf.Sqrt((positivity * positivity) + (avoidance * avoidance));
-        public float Joy        => positivity / BOUND;
-        public float EmoNeed    => (Positivity * NEEDFAC) + 0.5f;
+        public float Joy        => (Positivity * NEEDFAC) + 0.5f;
 
 
         public Color GetColor(float emoWellbeing) {
@@ -139,7 +138,7 @@ namespace CharacterModel {
         public static readonly Emotion UHOPE   = new Emotion( SQRT2,  -SQRT2);
 
 #region testing
-        public static (float, float) GetTestVlues(EEmotionType which) {
+        public static (float, float) GetTestValues(EEmotionType which) {
             switch (which) {
                 case EEmotionType.SURPRISED:
                     return (UAMAZE.positivity, UAMAZE.avoidance);

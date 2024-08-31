@@ -9,15 +9,19 @@ namespace CharacterModel {
 
     [Serializable]
     public class Need {
-        public const float TIME_SCALE = 60f; // FIXME: Connect to universal time scale
+        public const float TIME_SCALE = 6f; // FIXME: Connect to universal time scale
         [SerializeField] /*[HideInInspector]*/ [Range(0, 1)] float value;
         [SerializeField] float decayRate = 0.25f;
         [SerializeField] float importance = 1.0f;
         [SerializeField][HideInInspector] float minValue = 0.0f;
         [SerializeField] float driveOrigin = 1.2f;
         [SerializeField] bool depleting = false;
+        [SerializeField] AbstractNeedEvaluator evaluator;
 
         public float Value => value;
+        public float DriveOrigin => driveOrigin;
+        public float Importance => importance;
+        public AbstractNeedEvaluator Evaluator => evaluator;
 
 
         public Need(float decayRate, float importance, float minimum = 0.0f, bool tracking = true) {

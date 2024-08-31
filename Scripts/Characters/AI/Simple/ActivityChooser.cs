@@ -11,13 +11,13 @@ namespace CharacterModel {
         [System.Serializable]
         public class ActivityChoice : IComparer<ActivityChoice>, System.IComparable<ActivityChoice> {
             [SerializeField] public Activity activity;
-            [SerializeField] public AbstractNeedEvaluator evaluator;
+            //[SerializeField] public AbstractNeedEvaluator evaluator;
             public float desirability = 0;
             public float GetDesirability(CoreNeeds needs, float situation)
-                                        => evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
+                                        => needs.GetNeed(activity.need).Evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetDesirability(CoreNeeds needs, float situation) {
-                evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
+                needs.GetNeed(activity.need).Evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
             }
             public static bool operator >(ActivityChoice a, ActivityChoice b) => a.desirability > b.desirability;
             public static bool operator <(ActivityChoice a, ActivityChoice b) => a.desirability < b.desirability;
@@ -57,7 +57,7 @@ namespace CharacterModel {
                 currentChoice = Choose();
                 testingPlaceShower.transform.position = currentChoice.actorLocation.position;
                 //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
-                activityTimer = currentChoice.timeToDo;
+                activityTimer = currentChoice.timeToDo * Need.TIME_SCALE;
                 if(currentChoice.need == ENeeds.SITUATIONAL) needs.Situation = currentChoice.satisfaction;
                 else needs.Situation = 0.2f;
             } else {
@@ -65,6 +65,7 @@ namespace CharacterModel {
                 activityTimer -= Time.deltaTime;
                 needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo) * Time.deltaTime);
             }
+            character.Emotions.EmoUpdate(Time.deltaTime);
             needs.UpdateNeedsTesting();
         }
 

@@ -5,9 +5,10 @@ namespace CharacterModel {
 
     [System.Serializable]
     public class EmotionalState {
+        public const float TIME_TO_LOOSE_ONE = 24;
+        public const float TIME_FACTOR = 1 / TIME_TO_LOOSE_ONE;
+
         [SerializeField] Emotion emotion = new Emotion();
-        [SerializeField] Emotion target  = new Emotion();
-        [SerializeField] EmotionalEffects effects = new EmotionalEffects();
 
 
 #region Wrappers
@@ -15,8 +16,6 @@ namespace CharacterModel {
         public float Avoidance  => emotion.Avoidance;
         public float Strength   => emotion.Strength;
         public float Joy        => emotion.Joy;
-
-        public float EmotionalNeed => emotion.EmoNeed;
 
         public Color GetColor(float emoWellbeing) => emotion.GetColor(emoWellbeing);
         public Emotion.EmotionPacket RetrieveData(float emoWellbeing) => emotion.RetrieveData(emoWellbeing);
@@ -32,22 +31,17 @@ namespace CharacterModel {
 
         public void AddEmotion(EmotionEffect effect) {
             emotion += effect.Effect;
-            target  += effect.Effect;
-            effects.AddEffect(effect.Effect, effect.Duration);
         }
 
 
         public void AddEmotion(EmotionObject effect) {
             emotion += effect.Effect;
-            target  += effect.Effect;
-            effects.AddEffect(effect.Effect, effect.Duration);
         }
 
 
-        public void EmoUpdate() {
-            Emotion removed = effects.Update();
-            target -= removed;
-            emotion.TrackTarget(target);
+        public void EmoUpdate(float deltaTime) {
+            //TODO?: Allow centers other than 0 to allow for cheerful and melancholy traits
+            emotion -= emotion.GetNormalized() * (TIME_FACTOR * deltaTime / Need.TIME_SCALE);
         }
 
 
