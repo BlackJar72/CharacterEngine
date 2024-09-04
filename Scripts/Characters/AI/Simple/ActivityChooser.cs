@@ -8,37 +8,13 @@ namespace CharacterModel {
 
     public class ActivityChooser : MonoBehaviour
     {
-
-        [System.Serializable]
-        public class ActivityChoice : IComparer<ActivityChoice>, System.IComparable<ActivityChoice> {
-            [SerializeField] public Activity activity;
-            //[SerializeField] public AbstractNeedEvaluator evaluator;
-            public float desirability = 0;
-            public float GetDesirability(CoreNeeds needs, float situation)
-                                        => needs.GetNeed(activity.need).Evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetDesirability(CoreNeeds needs, float situation) {
-                needs.GetNeed(activity.need).Evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
-            }
-            public static bool operator >(ActivityChoice a, ActivityChoice b) => a.desirability > b.desirability;
-            public static bool operator <(ActivityChoice a, ActivityChoice b) => a.desirability < b.desirability;
-            public static bool operator >=(ActivityChoice a, ActivityChoice b) => a.desirability >= b.desirability;
-            public static bool operator <=(ActivityChoice a, ActivityChoice b) => a.desirability <= b.desirability;
-            public int Compare(ActivityChoice a, ActivityChoice b) {
-                return -a.desirability.CompareTo(b.desirability); // Should I do this, or use arithmetic?
-            }
-            public int CompareTo(ActivityChoice other) {
-                return -desirability.CompareTo(other.desirability); // Should I do this, or use arithmetic?
-            }
-        }
-
-
         [SerializeField] List<ActivityChoice> choices = new List<ActivityChoice>();
         [SerializeField] Character character;
         [SerializeField] CoreNeeds needs;
 
         private float activityTimer = 0;
         private bool  atLoction     = false;
+        private bool  ready         = false;
 
         //Testing Stuff
         [SerializeField] GameObject testingPlaceShower;
@@ -57,6 +33,7 @@ namespace CharacterModel {
         // FIXME/TODO: This ultimately needs to be removed, but first it must be replaced with a call from outside
         void Update()
         {
+            if(!ready) return;
             if(activityTimer <= 0) {
                 currentChoice = Choose();
                 testingPlaceShower.transform.position = currentChoice.actorLocation.position;
@@ -66,13 +43,13 @@ namespace CharacterModel {
                 else needs.Situation = 0.2f;
                 navAgent.SetDestination(currentChoice.actorLocation.position);
                 atLoction = false;
-                testingPlaceShower.SetActive(false);
             } else {
                 //FIXME: Remember, in the real game anything similar must use worled (simulation) time, not engine game time!
                 if(atLoction) {
+                    transform.rotation = currentChoice.actorLocation.rotation;
                     activityTimer -= Time.deltaTime;
                     needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo)
-                        * Time.deltaTime);
+                    * Time.deltaTime);
                 } else {
                     atLoction = navAgent.remainingDistance < 0.1f;
                     testingPlaceShower.SetActive(atLoction);
@@ -123,6 +100,13 @@ namespace CharacterModel {
             }
             return choices[selection].activity;
             return choices[selection].activity;
+        }
+
+
+        public void AssignChoices(List<ActivityChoice> availableChoices) {
+            choices.Clear();
+            foreach(ActivityChoice choice in availableChoices) choices.Add(choice);
+            ready = true;
         }
 
 

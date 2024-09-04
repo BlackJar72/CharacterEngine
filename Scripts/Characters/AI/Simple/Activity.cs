@@ -6,7 +6,8 @@ using CharacterEngine;
 
 namespace CharacterModel {
 
-    public class Activity : MonoBehaviour {
+    [System.Serializable]
+    public class Activity {
 
         public ENeeds need;
         public float satisfaction;

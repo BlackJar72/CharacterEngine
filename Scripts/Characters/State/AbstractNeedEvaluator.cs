@@ -6,9 +6,9 @@ namespace CharacterModel {
 
     public abstract class AbstractNeedEvaluator : ScriptableObject {
 
-        public abstract float GetDesirability(ActivityChooser.ActivityChoice choice, Need need, float extraData = 0f);
+        public abstract float GetDesirability(ActivityChoice choice, Need need, float extraData = 0f);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract void SetDesirability(ActivityChooser.ActivityChoice choice, Need need, float extraData = 0f);
+        public abstract void SetDesirability(ActivityChoice choice, Need need, float extraData = 0f);
     }
 
 }
