@@ -9,6 +9,8 @@ namespace CharacterModel {
     [System.Serializable]
     public class Activity {
 
+        // TODO: Need for multi-need satisfying activities to be represented (I think...?)
+
         public ENeeds need;
         public float satisfaction;
         public float timeToDo;

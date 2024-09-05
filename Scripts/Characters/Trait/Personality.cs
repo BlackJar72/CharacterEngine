@@ -51,11 +51,11 @@ namespace CharacterModel {
         /// two personalities (in an abstract six-dimensional space, of course).
         /// </summary>
         /// <param name="other">The personalit of the one with which compatibilities is being calculated</param>
-        /// <returns>A base compatibility</returns>
+        /// <returns>A base compatibility between 0.0 (no compatibility) and 1.0 (perfect match) </returns>
         /// TODO: This will need to be tweaked through testing mostllikely the inclusion of a scaling factor
         /// TODO  and/or other addition transformation.
         public float Compatibility(Personality other) {
-            return Mathf.Sqrt((float)((open.Value - other.open.Value)
+            return (50f - Mathf.Sqrt((float)((open.Value - other.open.Value)
                                         * (open.Value - other.open.Value))
                                   + ((moral.Value - other.moral.Value)
                                         * (open.Value - other.moral.Value))
@@ -66,7 +66,7 @@ namespace CharacterModel {
                                   + ((emotional.Value - other.emotional.Value)
                                         * (emotional.Value - other.emotional.Value))
                                   + ((industrious.Value - other.industrious.Value)
-                                        * (industrious.Value - other.industrious.Value)));
+                                        * (industrious.Value - other.industrious.Value)))) * 0.02f;
         }
 
 
