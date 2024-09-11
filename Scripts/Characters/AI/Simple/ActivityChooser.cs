@@ -17,7 +17,6 @@ namespace CharacterModel {
         private bool  ready         = false;
 
         //Testing Stuff
-        [SerializeField] GameObject testingPlaceShower;
         [SerializeField] Activity currentChoice;
         [SerializeField] NavMeshAgent navAgent;
 
@@ -36,7 +35,6 @@ namespace CharacterModel {
             if(!ready) return;
             if(activityTimer <= 0) {
                 currentChoice = Choose();
-                testingPlaceShower.transform.position = currentChoice.actorLocation.position;
                 //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
                 activityTimer = currentChoice.timeToDo * Need.TIME_SCALE;
                 if(currentChoice.need == ENeeds.SITUATIONAL) needs.Situation = currentChoice.satisfaction;
@@ -52,7 +50,6 @@ namespace CharacterModel {
                     * Time.deltaTime);
                 } else {
                     atLoction = navAgent.remainingDistance < 0.1f;
-                    testingPlaceShower.SetActive(atLoction);
                 }
             }
             character.Emotions.EmoUpdate(Time.deltaTime);
@@ -105,7 +102,7 @@ namespace CharacterModel {
 
         public void AssignChoices(List<ActivityChoice> availableChoices) {
             choices.Clear();
-            foreach(ActivityChoice choice in availableChoices) choices.Add(choice);
+            foreach(ActivityChoice choice in availableChoices) choices.Add(choice.Duplicate());
             ready = true;
         }
 
