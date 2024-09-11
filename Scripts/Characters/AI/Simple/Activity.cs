@@ -16,7 +16,10 @@ namespace CharacterModel {
         public float timeToDo;
         public Transform actorLocation;
 
+        public bool available =  true;
+        public bool shareable = false;
 
     }
+
 
 }

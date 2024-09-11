@@ -12,11 +12,11 @@ namespace CharacterModel {
 
         public override float GetDesirability(ActivityChoice choice, Need need, float unused = 0f) {
             SetDesirability(choice, need);
-            return -1.0f;
+            return 0.0f;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void SetDesirability(ActivityChoice choice, Need need, float unused = 0f) {
-            choice.desirability = -1.0f;
+            choice.desirability = 0.0f;
         }
 
     }

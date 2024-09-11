@@ -34,6 +34,7 @@ namespace CharacterModel {
         {
             if(!ready) return;
             if(activityTimer <= 0) {
+                currentChoice.available = true;
                 currentChoice = Choose();
                 //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
                 activityTimer = currentChoice.timeToDo * Need.TIME_SCALE;
@@ -41,6 +42,7 @@ namespace CharacterModel {
                 else needs.Situation = 0.2f;
                 navAgent.SetDestination(currentChoice.actorLocation.position);
                 atLoction = false;
+                currentChoice.available = false;
             } else {
                 //FIXME: Remember, in the real game anything similar must use worled (simulation) time, not engine game time!
                 if(atLoction) {

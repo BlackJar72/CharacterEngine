@@ -15,7 +15,11 @@ namespace CharacterModel {
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void SetDesirability(ActivityChoice choice, Need need, float situation) {
-            choice.desirability = (choice.activity.satisfaction - situation) * need.GetDrive() * Need.TIME_SCALE;
+            if(choice.activity.available || choice.activity.shareable) {
+                choice.desirability = (choice.activity.satisfaction - situation) * need.GetDrive() * Need.TIME_SCALE;
+            } else {
+                choice.desirability = 0.0f;
+            }
         }
 
     }
