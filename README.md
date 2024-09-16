@@ -21,9 +21,11 @@ choose.  This is likely only useful if either furth developed or canibalized for
 
 ## Videos of Prototype Demonstration
 
-https://youtu.be/GfmP3FVFkZ0?si=0a6X4gYSUSAT9Npc
 
-https://youtu.be/OT8obthJXWo?si=Sqc5wOcRp6VwBaCm
+
+[Testing Emotions, Needs, and Drive from Needs](https://youtu.be/GfmP3FVFkZ0?si=0a6X4gYSUSAT9Npc)
+
+[Testing the Decision Making System](https://youtu.be/OT8obthJXWo?si=Sqc5wOcRp6VwBaCm)
 
 ## License
 
