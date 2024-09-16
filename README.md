@@ -19,6 +19,11 @@ was abandoned before anything that lifely like was achieved in decision making.)
 This was not intended to be released under any liscense, but you may use it under the MIT liscense, it you 
 choose.  This is likely only useful if either furth developed or canibalized for specific subsystems.
 
+## Videos of Prototype Demonstration
+
+https://youtu.be/GfmP3FVFkZ0?si=0a6X4gYSUSAT9Npc
+https://youtu.be/OT8obthJXWo?si=Sqc5wOcRp6VwBaCm
+
 ## License
 
 Copyright (C) 2023-2024 Jared Blackburn
