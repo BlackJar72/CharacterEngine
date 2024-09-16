@@ -21,7 +21,7 @@ some aspects might be usable in other contexts, notably lifely NPC AIs in RPGs. 
 was abandoned before anything that lifely like was achieved in decision making.)
 
 This was not intended to be released under any liscense, but you may use it under the MIT liscense, it you 
-choose.  This is likely only useful if either furth developed or canibalized for specific subsystems.
+choose.  This is likely only useful with either further developed or to canibalize for specific subsystems.
 
 ## License
 
