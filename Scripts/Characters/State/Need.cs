@@ -16,12 +16,10 @@ namespace CharacterModel {
         [SerializeField][HideInInspector] float minValue = 0.0f;
         [SerializeField] float driveOrigin = 1.2f;
         [SerializeField] bool depleting = false;
-        [SerializeField] AbstractNeedEvaluator evaluator;
 
         public float Value => value;
         public float DriveOrigin => driveOrigin;
         public float Importance => importance;
-        public AbstractNeedEvaluator Evaluator => evaluator;
 
 
         public Need(float decayRate, float importance, float minimum = 0.0f, bool tracking = true) {

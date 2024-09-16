@@ -54,7 +54,7 @@ namespace CharacterModel {
                 this.social = social;
                 this.emotional = emotional;
                 this.situational = situational;
-                this.aspirational = aspirational;
+                this.aspirational = aspirational; // "Fulfilment" in UI
                 this.physWellbeing = physWellbeing;
                 this.psychWellbeing = psychWellbeing;
                 this.wellbeing = wellbeing;
@@ -70,7 +70,7 @@ namespace CharacterModel {
         [SerializeField] Need social; // = new Need(0.027f, 1.0f);
         [SerializeField] Need emotional; // = new Need(0.0f, 1.0f, 0.0f, false);
         [SerializeField] Need situational; // = new Need(0.0f, 1.0f, 0.0f, false);
-        [SerializeField] Need aspirational; // = new Need(0.0030154821598f, 0.5f);
+        [SerializeField] Need aspirational; // = new Need(0.0030154821598f, 0.5f); //NOTE: Call this "Fulfillment in game!
 
         [SerializeField] float physicalWellbeing = 1.0f;
         [SerializeField] float mentalWellbeing = 1.0f;

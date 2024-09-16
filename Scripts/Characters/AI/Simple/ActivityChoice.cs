@@ -11,13 +11,15 @@ namespace CharacterModel {
         [SerializeField] public Activity activity;
         //[SerializeField] public AbstractNeedEvaluator evaluator;
         public float desirability = 0; // This is to be calculated during decision making, not preset as data
+        [SerializeField] AbstractNeedEvaluator  evaluator;
+
 
         // Getting and setting desirability
         public float GetDesirability(CoreNeeds needs, float situation)
-            => needs.GetNeed(activity.need).Evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
+            => evaluator.GetDesirability(this, needs.GetNeed(activity.need), situation);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetDesirability(CoreNeeds needs, float situation) {
-            needs.GetNeed(activity.need).Evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
+            evaluator.SetDesirability(this, needs.GetNeed(activity.need), situation);
         }
 
 
