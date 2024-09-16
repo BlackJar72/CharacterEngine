@@ -12,20 +12,16 @@ traits (more specific characteristics, of which up to six would be selectable), 
 and goals & desires (of which perhaps three could be picked).  An early prototypes of a deciscion making 
 AI was started, but never finished.
 
-In addition to the games it was being developed for (a "dollhouse life simulator"), it had been hoped that 
+[Testing Emotions, Needs, and Drive from Needs](https://youtu.be/GfmP3FVFkZ0?si=0a6X4gYSUSAT9Npc)
+
+[Testing the Decision Making System](https://youtu.be/OT8obthJXWo?si=Sqc5wOcRp6VwBaCm)
+
+In addition to the game it was being developed for (a "dollhouse life simulator"), it had been hoped that 
 some aspects might be usable in other contexts, notably lifely NPC AIs in RPGs.  (Note, that the prototype 
 was abandoned before anything that lifely like was achieved in decision making.)
 
 This was not intended to be released under any liscense, but you may use it under the MIT liscense, it you 
 choose.  This is likely only useful if either furth developed or canibalized for specific subsystems.
-
-## Videos of Prototype Demonstration
-
-
-
-[Testing Emotions, Needs, and Drive from Needs](https://youtu.be/GfmP3FVFkZ0?si=0a6X4gYSUSAT9Npc)
-
-[Testing the Decision Making System](https://youtu.be/OT8obthJXWo?si=Sqc5wOcRp6VwBaCm)
 
 ## License
 
