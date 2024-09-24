@@ -26,6 +26,9 @@ namespace CharacterModel {
         // The maximum value achievable;
         public const double MAX     = 10000;
 
+        public const double BASE_DECAY_FACTOR = 0.912010839356; // 1 over the 25th root of 10, or 1/5 of a skill level
+        public const double BASE_DECAY_FIXED = 100;
+
 
         // DATA
         [SerializeField][Range(0,10000)] double xp;
@@ -67,11 +70,50 @@ namespace CharacterModel {
         }
 
 
+        [System.Obsolete("Abandoned early mechanic prototype; use RelatativeDecay() as this is the intended " +
+        "mechanic.  This may, however, have special usaes?")]
         public int Decay(float amount) {
             xp -= amount;
             if(xp < minXp) xp = minXp;
             if(xp < XP_FOR_LEVELS[level]) level--;
             return level;
+        }
+
+
+        /// <summary>
+        /// Removes 1/5 of a skill level worth of XP, to a minimum of the square root of the of the highest XP reached.
+        ///
+        /// If a skill is not used, practiced, or studied for an extended period of time skill will be lost.
+        ///
+        /// After a one day grace period, each day one fifth of skill level is lost, or one level every five days.
+        /// Thus, this would firest be called after a skill is neglected for two days and every day afterward until it
+        /// is used, resulting in lost of one skill level on the sixth day and every fifth day thereacters (until used).
+        ///
+        /// However, it will never reduce the skill to less than helf the the highest level obtatined, or to less than
+        /// one (as long as level 1 was reach) so that a skill is never completely lost once obtained.
+        /// </summary>
+        /// <param name="amount">The multiplier (should be less than one) for the XP; defaults to the 25th room of 10
+        /// (i.e., 1/5 of a level, as a level is based on the 5th root of 10)</param>
+        /// <returns>The level of the skill after the reduction</returns>
+        public int RelativeDecay(double amount = BASE_DECAY_FACTOR) {
+            xp *= amount;
+            if(xp < minXp) xp = minXp;
+            if(xp < XP_FOR_LEVELS[level]) level--;
+            return level;
+        }
+
+
+        // Mot sure if this "worst of both worlds" approach is to harsh of if the other option are too soft in some cases.
+        // Note that this might actually be kinder to new players, who would more likely to see the result at at lower
+        // skill level, and thus lose less when first hit by the decay mechanic.
+        [System.Obsolete("This may be switched to in the future, but at this time RelativeDecay() is the " +
+        "intended mechanic.")]
+        public int Decay(double factor = BASE_DECAY_FACTOR, double subtraction = BASE_DECAY_FIXED) {
+            xp = System.Math.Min(xp * factor, xp - subtraction);
+            if(xp < minXp) xp = minXp;
+            if(xp < XP_FOR_LEVELS[level]) level--;
+            return level;
+
         }
 
 
@@ -102,7 +144,7 @@ namespace CharacterModel {
             int currentLevel = level;
             // FIXME??? Get from manager?
             if((lastUsed - 1.5) > WorldTime.GetWorldTime().Days) {
-                Decay(100);
+                RelativeDecay();
                 return level < currentLevel;
             }
             return false;
