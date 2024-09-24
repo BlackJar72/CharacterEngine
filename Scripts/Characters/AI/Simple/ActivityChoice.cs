@@ -41,6 +41,7 @@ namespace CharacterModel {
             ActivityChoice output = new ActivityChoice();
             output.activity = activity;
             output.desirability = desirability;
+            output.evaluator = evaluator;
             return output;
         }
 

@@ -127,7 +127,9 @@ namespace CharacterModel {
 
 
         /// <summary>
-        /// This updates the lastUsed variable, and is called when the skill is used or learning occurs
+        /// This updates the lastUsed variable, and is called when the skill is used or learning occurs;
+        /// note that working a job that requires the skill does count as use, as we assume it will be used
+        /// in some aspect on the job.
         /// </summary>
         public void BeUsed() {
             // FIXME??? Get from manager?

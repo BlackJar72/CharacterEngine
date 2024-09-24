@@ -10,7 +10,6 @@ namespace CharacterModel {
     {
         [SerializeField] List<ActivityChoice> choices = new List<ActivityChoice>();
         [SerializeField] Character character;
-        [SerializeField] CoreNeeds needs;
 
         private float activityTimer = 0;
         private bool  atLoction     = false;
@@ -24,7 +23,6 @@ namespace CharacterModel {
         // Start is called before the first frame update
         void Start()
         {
-            needs = character.Needs;
             navAgent = GetComponent<NavMeshAgent>();
         }
 
@@ -38,8 +36,8 @@ namespace CharacterModel {
                 currentChoice = Choose();
                 //testingPlaceShower.transform.rotation = currentChoice.actorLocation.rotation;
                 activityTimer = currentChoice.timeToDo * Need.TIME_SCALE;
-                if(currentChoice.need == ENeeds.SITUATIONAL) needs.Situation = currentChoice.satisfaction;
-                else needs.Situation = 0.2f;
+                if(currentChoice.need == ENeeds.SITUATIONAL) character.Needs.Situation = currentChoice.satisfaction;
+                else character.Needs.Situation = 0.2f;
                 navAgent.SetDestination(currentChoice.actorLocation.position);
                 atLoction = false;
                 currentChoice.available = false;
@@ -48,24 +46,24 @@ namespace CharacterModel {
                 if(atLoction) {
                     transform.rotation = currentChoice.actorLocation.rotation;
                     activityTimer -= Time.deltaTime;
-                    needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo)
+                    character.Needs.GetNeed(currentChoice.need).AddSafe((currentChoice.satisfaction / currentChoice.timeToDo)
                     * Time.deltaTime);
                 } else {
                     atLoction = navAgent.remainingDistance < 0.1f;
                 }
             }
             character.Emotions.EmoUpdate(Time.deltaTime);
-            needs.UpdateNeedsTesting();
-            if(needs.GetNeed(ENeeds.HEALTH).Value == 0) {
+            character.Needs.UpdateNeedsTesting();
+            if(character.Needs.GetNeed(ENeeds.HEALTH).Value == 0) {
                 GameObject.Destroy(gameObject);
-                Debug.Log("Character Died");
+                Debug.Log(character.name + " Died");
             }
         }
 
 
         public void SortChoices() {
             foreach(ActivityChoice choice in choices) {
-                choice.SetDesirability(needs, needs.Situation);
+                choice.SetDesirability(character.Needs, character.Needs.Situation);
 
             }
             choices.Sort();
