@@ -59,7 +59,8 @@ namespace CharacterModel {
         public override int GetHashCode() => (int)(id ^ (id >> 32));
         public override bool Equals(object other) {
             Character o = other as Character;
-            return (o != null) && (o.id == id);
+            if(o == null) return false;
+            else return (o != null) && (o.id == id);
         }
         public static bool operator ==(Character a, Character b) => a.id == b.id;
         public static bool operator !=(Character a, Character b) => a.id != b.id;
