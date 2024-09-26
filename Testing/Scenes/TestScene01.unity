@@ -835,8 +835,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Character A
-  id: 0
-  age: 0
+  id: 1
+  age: 20
   personality:
     open:
       inborn:
@@ -1003,7 +1003,7 @@ MonoBehaviour:
       importance: 1
       minValue: 0
       driveOrigin: 1.2
-      depleting: 0
+      depleting: 1
     emotional:
       value: 0.5
       decayRate: 0
@@ -1339,8 +1339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Character B
-  id: 0
-  age: 0
+  id: 2
+  age: 20
   personality:
     open:
       inborn:
@@ -1507,7 +1507,7 @@ MonoBehaviour:
       importance: 1
       minValue: 0
       driveOrigin: 1.2
-      depleting: 0
+      depleting: 1
     emotional:
       value: 0.5
       decayRate: 0
@@ -2080,7 +2080,7 @@ MonoBehaviour:
       timeToDo: 2
       actorLocation: {fileID: 1773693037}
       available: 1
-      shareable: 0
+      shareable: 1
     desirability: 0
     evaluator: {fileID: 11400000, guid: 33f9518590e9a86b6a3135652cec4dbb, type: 2}
 --- !u!1 &1958685124

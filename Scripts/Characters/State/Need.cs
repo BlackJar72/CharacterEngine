@@ -162,9 +162,8 @@ namespace CharacterModel {
         }
 
 
-        // For testing purposes; must mirror non-static version
         public static float GetDrive(float value) {
-            return ((1.2f - value) / Mathf.Clamp(value, 0.05f, 0.5f) /* importance*/);
+            return ((1.2f - value) / Mathf.Clamp(value, 0.05f, 0.5f));
         }
 
 
