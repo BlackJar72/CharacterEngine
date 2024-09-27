@@ -22,6 +22,7 @@ namespace CharacterModel {
         [SerializeField] CoreNeeds needs;
         [SerializeField] EmotionalState emotions;
         [SerializeField] Preferences preferences;
+        [SerializeField] Relationships relationships;
 
         [SerializeField] ActivityChooser ai;
 
@@ -33,6 +34,8 @@ namespace CharacterModel {
         public Preferences prefs => preferences;
 
         public ActivityChooser AI => ai; // FIXME? TODO? Should it really be part of a bigger AI module?
+
+        public ulong ID => id;
 
 
         /// <summary>

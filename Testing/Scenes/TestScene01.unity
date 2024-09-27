@@ -1034,6 +1034,11 @@ MonoBehaviour:
     emotion:
       positivity: 0
       avoidance: 0
+  relationships:
+    relationships:
+    - otherID: 2
+      social: 80
+      romantic: 50
   ai: {fileID: 1112561860}
 --- !u!136 &1112561854
 CapsuleCollider:
@@ -1538,6 +1543,11 @@ MonoBehaviour:
     emotion:
       positivity: 0
       avoidance: 0
+  relationships:
+    relationships:
+    - otherID: 1
+      social: 60
+      romantic: 70
   ai: {fileID: 1211502356}
 --- !u!136 &1211502358
 CapsuleCollider:
