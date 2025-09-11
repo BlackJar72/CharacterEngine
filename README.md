@@ -23,6 +23,8 @@ was abandoned before anything that lifely like was achieved in decision making.)
 This was not intended to be released under any liscense, but you may use it under the MIT liscense, it you 
 choose.  This is likely only useful with either further developed or to canibalize for specific subsystems.
 
+[Why this project was abandoned](https://youtu.be/jV3A-xjjnHw)
+
 ## License
 
 Copyright (C) 2023-2024 Jared Blackburn
