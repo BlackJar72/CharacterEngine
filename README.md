@@ -1,5 +1,7 @@
 # Abandoned Life Simulation AI Prototype
 
+## Do to the flurry of new age verification laws I do not have the infrastructure to comply with, I will not be making or working on videogames or any other standalone software applications. ##
+
 This is the (incomplete) character model for an abandoned life simulation game, planned to be similar 
 to The Sims, Paralives, InZOI, or Life By You.  It was abandoned due to the conclusion that this kind 
 of game is just too big for me to make by my self.  That, and decided wanted to do other things with 
